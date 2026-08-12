@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mi-tech</title>
+
+ 
+  <link rel="icon" type="image/png"     href="favicon.png">
+  <!-- <link rel="icon" type="image/svg+xml" href="favicon.svg"> -->
+  
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { cursor: none; overflow-x: hidden; }
+
+    :root {
+      --bg:         #ffffff;
+      --text:       #0a0a0a;
+      --muted:      #888888;
+      --border:     #e2e2e2;
+      --tag-border: rgba(10,10,10,0.4);
+      --btn-bg:     #0a0a0a;
+      --btn-text:   #ffffff;
+    }
+    [data-theme="dark"] {
+      --bg:         #0d0d0d;
+      --text:       #f0f0f0;
+      --muted:      #606060;
+      --border:     #242424;
+      --tag-border: rgba(240,240,240,0.35);
+      --btn-bg:     #f0f0f0;
+      --btn-text:   #0a0a0a;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg); color: var(--text);
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    /* ── Preloader ── */
+    #preloader {
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pre-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 52px; letter-spacing: -0.02em;
+      opacity: 0; transform: translateY(20px);
+    }
+
+    /* ── Progress ── */
+    #prog {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+      height: 2px; background: var(--text);
+      transform-origin: left; transform: scaleX(0);
+      transition: background 0.4s; pointer-events: none;
+    }
+
+    /* ── Cursor ── */
+    #cur-dot {
+      position: fixed; z-index: 9999; pointer-events: none;
+      width: 6px; height: 6px; border-radius: 50%; background: var(--text);
+      transform: translate(-50%,-50%); transition: background 0.4s, width 0.2s, height 0.2s;
+    }
+    #cur-ring {
+      position: fixed; z-index: 9998; pointer-events: none;
+      width: 38px; height: 38px; border-radius: 50%;
+      border: 1.5px solid var(--text);
+      transform: translate(-50%,-50%);
+      transition: border-color 0.4s, width 0.25s ease, height 0.25s ease;
+    }
+    body.cursor-hover #cur-dot  { width: 8px; height: 8px; }
+    body.cursor-hover #cur-ring { width: 54px; height: 54px; }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 26px 52px; background: var(--bg); transition: background 0.4s;
+    }
+    .nav-logo { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:17px; letter-spacing:.06em; }
+    .dark-btn { background:none; border:none; cursor:none; font-size:20px; color:var(--text); transition:color 0.4s; line-height:1; }
+
+    /* ── Layout ── */
+    .wrap { max-width: 1060px; margin: 0 auto; padding: 0 52px; }
+    .section { padding: 80px 0; }
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(38px,6.5vw,78px); font-weight: 700;
+      letter-spacing: -0.025em; margin-bottom: 24px;
+    }
+    .div { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+    /* ══════════════════════════════════════════════════════════
+       PHOTO LAYOUT 1 — HERO
+       Corner-bracket portrait, top-right of hero.
+       Replace src in .hero-photo-inner img
+    ══════════════════════════════════════════════════════════ */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 130px 52px 80px;
+      max-width: 1060px; margin: 0 auto; position: relative;
+    }
+    .hero-photo-wrap {
+      position: absolute; top: 148px; right: 52px;
+      width: 260px; height: 330px;
+    }
+    .hero-photo-inner {
+      width: 100%; height: 100%; overflow: hidden;
+      background: var(--border);
+      /* subtle inner border */
+      outline: 1px solid var(--border);
+    }
+    .hero-photo-inner img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block;
+    }
+    /* 4 corner bracket accents */
+    .corner {
+      position: absolute; width: 14px; height: 14px;
+      transition: border-color 0.4s;
+    }
+    .corner-tl { top:-7px; left:-7px;  border-top:2px solid var(--text); border-left:2px solid var(--text); }
+    .corner-tr { top:-7px; right:-7px; border-top:2px solid var(--text); border-right:2px solid var(--text); }
+    .corner-bl { bottom:-7px; left:-7px;  border-bottom:2px solid var(--text); border-left:2px solid var(--text); }
+    .corner-br { bottom:-7px; right:-7px; border-bottom:2px solid var(--text); border-right:2px solid var(--text); }
+
+    /* Hero text */
+    .hero-name {
+      font-family:'Space Grotesk',sans-serif;
+      font-size:clamp(58px,9.5vw,118px); font-weight:700;
+      line-height:1.0; letter-spacing:-0.025em; margin-bottom:18px;
+    }
+    .char { display:inline-block; will-change:transform; }
+    .hero-sub { color:var(--muted); font-size:16px; margin-bottom:52px; min-height:24px; }
+
+    /* Socials */
+    .socials { display:flex; flex-wrap:wrap; gap:10px; }
+    .si {
+      width:46px; height:46px; border:1.5px solid var(--border); border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      text-decoration:none; color:var(--text);
+      transition:background 0.22s, border-color 0.22s, color 0.22s;
+      cursor:none; will-change:transform;
+    }
+    .si:hover { background:var(--text); color:var(--bg); border-color:var(--text); }
+    .si svg { width:17px; height:17px; flex-shrink:0; }
+
+    /* Scroll indicator */
+    .scroll-wrap { position:absolute; bottom:56px; right:52px; width:108px; height:108px; }
+    .scroll-svg { width:100%; height:100%; animation:spin 10s linear infinite; fill:none; }
+    .scroll-svg text { fill:var(--text); font-size:10.5px; font-family:'Inter',sans-serif; letter-spacing:3.8px; }
+    .scroll-mouse {
+      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+      width:22px; height:35px; border:2px solid var(--text); border-radius:11px;
+      display:flex; justify-content:center; align-items:flex-start; padding-top:6px;
+      transition:border-color 0.4s;
+    }
+    .scroll-wheel { width:3px; height:8px; background:var(--text); border-radius:2px; transition:background 0.4s; animation:wheel 1.6s ease-in-out infinite; }
+    @keyframes spin  { to { transform:rotate(360deg); } }
+    @keyframes wheel { 0%,100% { transform:translateY(0); opacity:1; } 55% { transform:translateY(5px); opacity:0.3; } }
+
+    /* ══════════════════════════════════════════════════════════
+       PHOTO LAYOUT 2 — ABOUT
+       Double-ring circle. Replace src in .about-photo-inner img
+    ══════════════════════════════════════════════════════════ */
+    .about-inner { display:flex; gap:100px; align-items:center; }
+    .about-photo-wrap {
+      position: relative; width:300px; height:300px; flex-shrink:0;
+    }
+    /* outer dashed ring */
+    .about-photo-wrap::before {
+      content:''; position:absolute; inset:-10px; border-radius:50%;
+      border:1px dashed var(--border); transition:border-color 0.4s;
+    }
+    /* inner thin ring */
+    .about-photo-wrap::after {
+      content:''; position:absolute; inset:-3px; border-radius:50%;
+      border:1px solid var(--border); transition:border-color 0.4s;
+    }
+    .about-photo-inner {
+      width:100%; height:100%; border-radius:50%; overflow:hidden;
+      background:var(--border);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--muted); font-size:13px; text-align:center; padding:10px;
+    }
+   .about-photo-inner img { width: 100%; height: 100%; object-fit: cover; object-position: center ; transform: scale(1.02); border-radius: 50%; }
+    .about-label { font-size:13px; color:var(--muted); margin-bottom:18px; }
+    .about-bio p { font-size:21px; font-weight:500; line-height:1.45; margin-bottom:18px; }
+    .btn {
+      display:inline-flex; align-items:center; gap:6px;
+      background:var(--btn-bg); color:var(--btn-text);
+      padding:14px 26px; border-radius:100px;
+      font-size:14px; font-weight:500; text-decoration:none;
+      cursor:none; transition:opacity 0.2s, background 0.4s, color 0.4s; margin-top:12px;
+    }
+    .btn:hover { opacity:.78; }
+
+    /* Skills */
+    .skills-grid { display:flex; flex-wrap:wrap; gap:10px; margin-top:52px; }
+    .skill-tag {
+      border:1.5px solid var(--tag-border); padding:7px 16px; border-radius:100px;
+      font-size:13px; font-weight:500; color:var(--text); cursor:none;
+      transition:background 0.22s, color 0.22s, border-color 0.22s;
+    }
+    .skill-tag:hover { background:var(--text); color:var(--bg); border-color:var(--text); }
+
+    /* Experience */
+    .exp-item { display:flex; align-items:center; gap:20px; padding:28px 0; }
+    .exp-logo {
+      width:54px; height:54px; border-radius:12px; background:#d8d8d8; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:20px; color:#888;
+      overflow:hidden;
+    }
+    .exp-logo img { width:100%; height:100%; object-fit:cover; filter:grayscale(1); }
+    .exp-info { flex:1; }
+    .exp-name { font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:18px; }
+    .exp-role { font-size:13px; color:var(--muted); margin-top:3px; }
+    .exp-date { font-size:13px; color:var(--muted); white-space:nowrap; }
+
+    /* Projects */
+    .proj-item {
+      display:grid; grid-template-columns:1fr auto; gap:20px; padding:34px 0;
+      cursor:pointer; transition:background 0.25s ease, padding 0.25s ease; border-radius:4px;
+    }
+    .proj-item:hover { background:rgba(0,0,0,0.018); padding-left:8px; padding-right:8px; }
+    [data-theme="dark"] .proj-item:hover { background:rgba(255,255,255,0.025); }
+    .proj-name {
+      font-family:'Space Grotesk',sans-serif; font-weight:700;
+      font-size:clamp(22px,2.8vw,32px); margin-bottom:12px;
+      position:relative; display:inline-block;
+    }
+    .proj-name::after {
+      content:''; position:absolute; bottom:-3px; left:0;
+      height:2px; background:var(--text); width:0; transition:width 0.4s ease;
+    }
+    .proj-item:hover .proj-name::after { width:100%; }
+    .proj-desc { font-size:14px; color:var(--muted); max-width:520px; line-height:1.65; margin-bottom:18px; }
+    .tags { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+    .tag { border:1.5px solid var(--tag-border); padding:6px 14px; border-radius:100px; font-size:12px; font-weight:500; color:var(--text); transition:border-color 0.4s, color 0.4s; }
+    .proj-num { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:19px; color:var(--muted); white-space:nowrap; align-self:start; padding-top:6px; transition:color 0.3s; }
+    .proj-item:hover .proj-num { color:var(--text); }
+    .proj-gh {
+      display:inline-flex; align-items:center; gap:4px;
+      font-size:12px; color:var(--muted); text-decoration:none;
+      cursor:none; transition:color 0.2s;
+    }
+    .proj-gh:hover { color:var(--text); }
+
+    /* ══════════════════════════════════════════════════════════
+       PHOTO LAYOUT 3 — FOOTER BACKGROUND
+       A faded full-width photo sits behind footer content.
+       Replace src in .footer-bg-photo img
+    ══════════════════════════════════════════════════════════ */
+    footer {
+      position: relative; overflow: hidden;
+      border-top: 1px solid var(--border);
+      padding: 52px 52px;
+      max-width: 1060px; margin: 0 auto;
+    }
+    .footer-bg-photo {
+      position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:0;
+    }
+    .footer-bg-photo img {
+      width:100%; height:100%; object-fit:cover; object-position:center top;
+      filter:grayscale(1); opacity:0.06;
+      transition:opacity 0.4s;
+    }
+    [data-theme="dark"] .footer-bg-photo img { opacity:0.09; }
+    .footer-inner {
+      position:relative; z-index:1;
+      display:flex; justify-content:space-between; align-items:center;
+      flex-wrap:wrap; gap:24px;
+    }
+    .footer-copy { font-size:14px; color:var(--muted); }
+    .footer-contact { text-align:right; font-size:14px; color:var(--muted); line-height:1.8; }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      nav, footer { padding: 20px 24px; }
+      #hero { padding: 110px 24px 70px; }
+      .wrap { padding: 0 24px; }
+      .section { padding: 60px 0; }
+      .about-inner { flex-direction: column; gap: 36px; }
+      .about-photo-wrap { width: 210px; height: 210px; }
+      .about-bio p { font-size: 18px; }
+      .scroll-wrap, .hero-photo-wrap { display: none; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+      .footer-contact { text-align: left; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="preloader"><span class="pre-logo">a moving man..</span></div>
+<div id="prog"></div>
+<div id="cur-dot"></div>
+<div id="cur-ring"></div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo">Mi-Tech</div>
+  <button class="dark-btn" id="darkBtn">☾</button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HERO SECTION
+═══════════════════════════════════════════════════════════ -->
+<section id="hero">
+  <h1 class="hero-name">Hi, I'm<br>Ezechukwu<br>Miracle.</h1>
+  <p class="hero-sub">Nice to meet you.</p>
+
+  <div class="socials">
+
+    <!-- ════ SOCIAL LINKS — swap each href ════
+         GitHub    : already set ✅
+         Email     : already set ✅
+         Instagram : href="https://instagram.com/YOUR_HANDLE"
+         Facebook  : href="https://facebook.com/YOUR_PROFILE"
+         Discord   : href="https://discord.gg/YOUR_SERVER"  or  https://discord.com/users/YOUR_ID
+         YouTube   : href="https://youtube.com/@YOUR_CHANNEL"
+    ════ -->
+
+    <a class="si" href="https://github.com/MI-TECHDLIN" target="_blank" title="GitHub">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+    </a>
+    <a class="si" href="mailto:ezechukwumiracle52@gmail.com" target="_blank" title="Email">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+    </a>
+    <a class="si" href="https://www.instagram.com/mi_techydlin" target="_blank" title="Instagram"><!-- ← paste Instagram URL -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+    </a>
+    <a class="si" href="https://facebook.com/share/1JdosmJjdU/" target="_blank" title="Facebook"><!-- ← paste Facebook URL -->
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+    </a>
+    <a class="si" href="https://www.youtube.com/@mi_techydlin" target="_blank" title="YouTube"><!-- ← paste YouTube URL -->
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+    </a>
+  </div>
+
+  <!-- ════ PHOTO LAYOUT 1: HERO CORNER-BRACKET PORTRAIT ════
+       Put your photo file in the same folder as index.html,
+       then replace  hero-photo.jpg  below with your filename.
+       Tip: portrait crop works best (3:4 ratio).
+  ════ -->
+  <div class="hero-photo-wrap" id="heroPhoto">
+    <div class="hero-photo-inner">
+      <img src="hero.jpg" alt="Ezechukwu Miracle">
+    </div>
+    <span class="corner corner-tl"></span>
+    <span class="corner corner-tr"></span>
+    <span class="corner corner-bl"></span>
+    <span class="corner corner-br"></span>
+  </div>
+
+  <div class="scroll-wrap">
+    <svg class="scroll-svg" viewBox="0 0 108 108">
+      <defs><path id="cp" d="M54,54 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs>
+      <text><textPath href="#cp">· scroll down · scroll down ·&nbsp;</textPath></text>
+    </svg>
+    <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     ABOUT + SKILLS
+═══════════════════════════════════════════════════════════ -->
+<div class="wrap">
+  <section class="section" id="about">
+    <div class="about-inner">
+
+      <!-- ════ PHOTO LAYOUT 2: ABOUT DOUBLE-RING CIRCLE ════
+           Put your photo file in the same folder, then replace
+           about-photo.jpg  below with your filename.
+           Square or portrait crops work best.
+      ════ -->
+      <div class="about-photo-wrap" id="aboutPhoto">
+        <div class="about-photo-inner">
+          <img src="about-photo.png" alt="Ezechukwu Miracle">
+          <!-- Remove the img tag and put back this span if no photo yet:
+          <span style="line-height:1.6">📸<br>Your photo</span>
+          -->
+        </div>
+      </div>
+
+      <div id="aboutText">
+        <p class="about-label">About Me.</p>
+        <div class="about-bio">
+          <p>I'm a Pragmatic engineer.</p>
+          <p>I build Cross Platform Apps, i channel ideas,thoughts to a technical execution, driven by a craving to ship things that matter.</p>
+        </div>
+        <a class="btn" href="ezechukwu_miracle_cv.docx" download>My Resume ↗</a>
+      </div>
+    </div>
+
+    <div class="skills-grid" id="skillsGrid">
+      <span class="skill-tag">Flutter</span>
+      <span class="skill-tag">Dart</span>
+      <span class="skill-tag">GetX</span>
+      <span class="skill-tag">Provider</span>
+      <span class="skill-tag">Firebase</span>
+      <span class="skill-tag">FastAPI</span>
+      <span class="skill-tag">Python</span>
+      <span class="skill-tag">Node.js</span>
+      <span class="skill-tag">React</span>
+      <span class="skill-tag">Kotlin</span>
+      <span class="skill-tag">Squad API</span>
+      <span class="skill-tag">REST APIs</span>
+      <span class="skill-tag">Android</span>
+      <span class="skill-tag">Material 3</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       EXPERIENCE
+  ═══════════════════════════════════════════════════════ -->
+  <section class="section" id="experience">
+    <h2 class="section-title">Experience</h2>
+    <hr class="div">
+    <div class="exp-item" id="expItem">
+     
+      <div class="exp-info">
+        <div class="exp-name">Hustle</div>
+        <div class="exp-role">Lead Mobile Engineer</div>
+      </div>
+      <div class="exp-date">2026 – Present</div>
+    </div>
+    <hr class="div">
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       WORKSweb
+  ═══════════════════════════════════════════════════════ -->
+  <section class="section" id="works">
+    <h2 class="section-title">Projects</h2>
+    <hr class="div">
+
+    <!-- /01 ─ Catalyst -->
+    <div class="proj-item">
+      <div>
+        <div class="proj-name">Curre</div>
+        <p class="proj-desc">A Flutter focus app that inverts Atomic Habits — instead of "making it obvious," it makes distractions invisible by hiding disruptive apps during user-defined focus periods.</p>
+        <div class="tags">
+          <span class="tag">Flutter</span><span class="tag">GetX</span><span class="tag">Kotlin</span><span class="tag">Android</span><span class="tag">Material 3</span>
+        </div>
+        <!-- ════ GITHUB LINK — Catalyst ════ Replace # with your repo URL -->
+        <a class="proj-gh">Ongoing↗</a>
+      </div>
+      <div class="proj-num">/01</div>
+    </div>
+    <hr class="div">
+
+    <!-- /02 ─ Hustle -->
+    <div class="proj-item">
+      <div>
+        <div class="proj-name">Hustle</div>
+        <p class="proj-desc">A hyper-local informal labor platform connecting Nigeria's gig workers with service seekers via GPS matching, escrow payments (Squad API), and a trust score algorithm built for pan-African scale.</p>
+        <div class="tags">
+          <span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">Squad API</span><span class="tag">GPS Matching</span><span class="tag">Node.js</span>
+        </div>
+        <!-- ════ GITHUB LINK — Hustle ════ Replace # with your repo URL -->
+        <a class="proj-gh" href="https://github.com/olowolayemogoodness-crypto/hustle" target="_blank">View on GitHub ↗</a>
+      </div>
+      <div class="proj-num">/02</div>
+    </div>
+    <hr class="div">
+
+    <!-- /03 ─ Flowo -->
+    <div class="proj-item">
+      <div>
+        <div class="proj-name">Flowo</div>
+        <p class="proj-desc">An AI-powered task productivity tool that ranks day to day tasks based on priority and importance, built with Flutter frontend and FastAPI/Groq backend. Features intelligent task suggestions, real-time Firebase storage.</p>
+        <div class="tags">
+          <span class="tag">Flutter</span><span class="tag">FastAPI</span ><span class="tag">Firebase</span><span class="tag">Groq API</span><span class="tag">Python</span>
+        </div>
+        <!-- ════ GITHUB LINK — Flowo ════ Replace # with your repo URL -->
+        <a class="proj-gh" href="https://github.com/MI-TECHDLIN/flowo" target="_blank">View on GitHub ↗</a>
+      </div>
+      <div class="proj-num">/03</div>
+    </div>
+    <hr class="div">
+
+    <!-- /04 ─ Konet -->
+    <div class="proj-item">
+      <div>
+        <div class="proj-name">Konet</div>
+        <p class="proj-desc">A decentralized P2P communication app with unique link identifiers and end-to-end encryption — letting users connect privately without sharing personal contact details.</p>
+        <div class="tags">
+          <span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">P2P Networking</span><span class="tag">E2E Encryption</span>
+        </div>
+        <!-- ════ GITHUB LINK — Konet ════ Replace # with your repo URL -->
+        <a class="proj-gh" href="https://github.com/MI-TECHDLIN/konet" target="_blank">View on GitHub ↗</a>
+      </div>
+      <div class="proj-num">/04</div>
+    </div>
+    <hr class="div">
+
+    <!-- /05 ─ KOStream -->
+    <div class="proj-item">
+      <div>
+        <div class="proj-name">KOstream</div>
+        <p class="proj-desc">An app that monitors live streams across multiple platforms in real-time, helping streamers or managers.</p>
+        <div class="tags">
+          <span class="tag">Stream APIS</span><span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">WebSockets</span>
+        </div>
+        <!-- ════ GITHUB LINK — Nigerian History Quiz ════ Replace # with your repo URL -->
+        <a class="proj-gh" >Private Repository ↗</a>
+      </div>
+      <div class="proj-num">/05</div>
+    </div>
+    <hr class="div">
+
+    <!-- /05 ─ drimai -->
+    <div class="proj-item">
+      <div>
+        <div class="proj-name">Drim AI</div>
+        <p class="proj-desc">AI-powered career matching guidance app that takes students through a structured journey of self-discovery.</p>
+        <div class="tags">
+          <span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">Adazuna</span><span class="tag">TypeScript</span><span class="tag">Edge Functions</span>
+        </div>
+        <!-- ════ GITHUB LINK — drim ════ Replace # with your repo URL -->
+        <a class="proj-gh" href="https://github.com/MI-TECHDLIN/drim-ai" target="_blank">View on GitHub ↗</a>
+      </div>
+      <div class="proj-num">/06</div>
+    </div>
+    <hr class="div">
+
+    <!-- /06-easybirth -->
+    <div class="proj-item">
+      <div>
+        <div class="proj-name">Easybirth</div>
+        <p class="proj-desc">a voice-assitant app that helps pregnant women to understand their sysmptoms, konw when to act and connect with the right care.</p>
+        <div class="tags">
+          <span class="tag">Riverpod</span><span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">Gemini</span><span class="tag">HTTP</span><span class="tag">Hive</span>
+        </div>
+        <!-- ════ GITHUB LINK — drim ════ Replace # with your repo URL -->
+        <a class="proj-gh" href="https://github.com/MI-TECHDLIN/easybirth" target="_blank">View on GitHub ↗</a>
+      </div>
+      <div class="proj-num">/07</div>
+    </div>
+    <hr class="div">
+
+
+    <!-- 08-trayse -->
+    <div class="proj-item">
+      <div>
+        <div class="proj-name">Trayse</div>
+        <p class="proj-desc">A comprehensive enterprise for finding lost items in campuse environment and connecting with campus allies.</p>
+        <div class="tags">
+          <span class="tag">Flutter</span><span class="tag">Django</span><span class="tag">Dart</span><span class="tag">Squad Api</span><span class="tag">Python</span>
+        </div>
+        <!-- ════ GITHUB LINK — drim ════ Replace # with your repo URL -->
+        <a class="proj-gh">Private Repository ↗</a>
+      </div>
+      <div class="proj-num">/08</div>
+    </div>
+    <hr class="div">
+
+   
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════════ -->
+<footer>
+
+  <!-- ════ PHOTO LAYOUT 3: FOOTER BACKGROUND ════
+       Put your photo file in the same folder, then replace
+       footer-bg.jpg  below with your filename.
+       A wide landscape or full-body shot works best.
+       The photo shows very faintly (6% opacity) behind the footer.
+  ════ -->
+  <div class="footer-bg-photo">
+    <img src="footer-bg.webp" alt="">
+  </div>
+
+  <div class="footer-inner">
+    <p class="footer-copy">© 2026 Ezechukwu Miracle.</p>
+
+    <div class="socials">
+      <!-- Same links as hero — keep them in sync -->
+      <a class="si" href="https://github.com/MI-TECHDLIN" target="_blank" title="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      </a>
+      <a class="si" href="mailto:ezechukwumiracle52@gmail.com" target="_blank" title="Email">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </a>
+      <a class="si" href="https://www.instagram.com/mi_techydlin" target="_blank" title="Instagram"><!-- ← paste Instagram URL -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+      </a>
+      <a class="si" href="https://facebook.com/share/1JdosmJjdU/" target="_blank" title="Facebook"><!-- ← paste Facebook URL -->
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+      <a class="si" href="https://www.youtube.com/@mi_techydlin" target="_blank" title="YouTube"><!-- ← paste YouTube URL -->
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a>
+    </div>
+
+    <div class="footer-contact">
+      <p>Lagos, Nigeria.</p>
+      <p>ezechukwumiracle52@gmail.com</p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ── Text Scramble ── */
+class TextScramble {
+  constructor(el) { this.el=el; this.chars='!<>-_\\/[]{}=+*^?#'; this.update=this.update.bind(this); }
+  setText(txt) {
+    return new Promise(res => {
+      this.queue = txt.split('').map((to,i) => ({ to, start:Math.floor(Math.random()*10), end:Math.floor(Math.random()*10)+12+i }));
+      cancelAnimationFrame(this.raf); this.frame=0; this.resolve=res; this.update();
+    });
+  }
+  update() {
+    let out='', done=0;
+    this.queue.forEach(q => {
+      if (this.frame>=q.end) { done++; out+=q.to; }
+      else if (this.frame>=q.start) {
+        if (!q.c||Math.random()<0.3) q.c=this.chars[Math.floor(Math.random()*this.chars.length)];
+        out+=`<span style="opacity:.3">${q.c}</span>`;
+      } else out+=q.to;
+    });
+    this.el.innerHTML=out;
+    if (done===this.queue.length) this.resolve();
+    else { this.raf=requestAnimationFrame(this.update); this.frame++; }
+  }
+}
+
+/* ── Split chars ── */
+function splitChars(el) {
+  const lines = el.innerHTML.split('<br>');
+  el.innerHTML = lines.map(line =>
+    line.split('').map(c => c.trim() ? `<span class="char">${c}</span>` : c).join('')
+  ).join('<br>');
+  return el.querySelectorAll('.char');
+}
+
+/* ── Preloader ── */
+window.addEventListener('load', () => {
+  const preLogo = document.querySelector('.pre-logo');
+  gsap.timeline({ onComplete: () => { document.getElementById('preloader').remove(); launchHero(); } })
+    .to(preLogo, { opacity:1, y:0, duration:0.5, ease:'power3.out' })
+    .to(preLogo, { opacity:0, duration:0.3, delay:0.55 })
+    .to('#preloader', { scaleY:0, transformOrigin:'top', duration:0.7, ease:'power4.inOut' });
+});
+
+function launchHero() {
+  const chars = splitChars(document.querySelector('.hero-name'));
+  const sub   = document.querySelector('.hero-sub');
+
+  gsap.timeline()
+    .from('.nav-logo',        { y:-30, opacity:0, duration:0.55, ease:'power3.out' })
+    .from('.dark-btn',        { y:-30, opacity:0, duration:0.55, ease:'power3.out' }, '<0.08')
+    .from(chars,              { y:90,  opacity:0, duration:0.65, stagger:0.016, ease:'power4.out' }, '-=0.25')
+    .from(sub,                { opacity:0, y:14, duration:0.5 }, '-=0.2')
+    .from('.si',              { scale:0, opacity:0, duration:0.45, stagger:0.07, ease:'back.out(1.6)' }, '-=0.25')
+    .from('#heroPhoto',       { opacity:0, y:20, duration:0.7, ease:'power3.out' }, '-=0.4')
+    .from('.scroll-wrap',     { opacity:0, scale:0.85, duration:0.7, ease:'back.out(1.2)' }, '-=0.5');
+
+  setTimeout(() => { new TextScramble(sub).setText('Nice to meet you.'); }, 1100);
+  setupScrollAnimations();
+  setupMagnetic();
+}
+
+/* ── Scroll animations ── */
+function setupScrollAnimations() {
+  gsap.utils.toArray('.section-title').forEach(el => {
+    gsap.from(el, { scrollTrigger:{trigger:el,start:'top 82%'}, x:-55, opacity:0, duration:0.85, ease:'power3.out' });
+  });
+  gsap.from('#aboutPhoto', { scrollTrigger:{trigger:'.about-inner',start:'top 78%'}, x:-65, opacity:0, duration:0.95, ease:'power3.out' });
+  gsap.from('#aboutText',  { scrollTrigger:{trigger:'.about-inner',start:'top 78%'}, x:65,  opacity:0, duration:0.95, ease:'power3.out', delay:0.12 });
+  gsap.from('.skill-tag',  { scrollTrigger:{trigger:'#skillsGrid',start:'top 86%'}, y:22, opacity:0, duration:0.4, stagger:{each:0.045}, ease:'power2.out' });
+  gsap.from('#expItem',    { scrollTrigger:{trigger:'#expItem',start:'top 85%'}, x:-45, opacity:0, duration:0.75, ease:'power3.out' });
+  gsap.utils.toArray('.proj-item').forEach(el => {
+    gsap.from(el, { scrollTrigger:{trigger:el,start:'top 88%'}, y:48, opacity:0, duration:0.7, ease:'power3.out' });
+  });
+  gsap.from('.footer-inner > *', { scrollTrigger:{trigger:'footer',start:'top 90%'}, y:24, opacity:0, duration:0.6, stagger:0.12, ease:'power2.out' });
+}
+
+/* ── Magnetic ── */
+function setupMagnetic() {
+  [...document.querySelectorAll('.si'), document.querySelector('.dark-btn')].forEach(el => {
+    el.addEventListener('mousemove', e => {
+      const r=el.getBoundingClientRect();
+      gsap.to(el, { x:(e.clientX-(r.left+r.width/2))*0.38, y:(e.clientY-(r.top+r.height/2))*0.38, duration:0.3, ease:'power2.out' });
+    });
+    el.addEventListener('mouseleave', () => gsap.to(el, { x:0, y:0, duration:0.65, ease:'elastic.out(1,0.4)' }));
+  });
+}
+
+/* ── Dark mode ── */
+document.getElementById('darkBtn').addEventListener('click', function() {
+  const dark = document.documentElement.dataset.theme === 'dark';
+  document.documentElement.dataset.theme = dark ? 'light' : 'dark';
+  this.textContent = dark ? '☾' : '☀';
+});
+
+/* ── Cursor ── */
+const dot=document.getElementById('cur-dot'), ring=document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; });
+document.querySelectorAll('a,button,.skill-tag').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+});
+(function track() { rx+=(mx-rx)*0.13; ry+=(my-ry)*0.13; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(track); })();
+
+/* ── Progress bar ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('prog').style.transform = `scaleX(${window.scrollY/(document.body.scrollHeight-window.innerHeight)})`;
+}, { passive:true });
+</script>
+</body>
+</html>

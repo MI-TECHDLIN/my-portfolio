@@ -221,22 +221,22 @@
     .hero {
       position: relative; max-width: var(--maxw); margin: 0 auto;
       min-height: 100vh; min-height: 100svh;
-      padding: 132px var(--gutter) 104px;
+      padding: 116px var(--gutter) 84px;
       display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center;
       column-gap: clamp(32px, 5vw, 72px);
     }
     .hero-name {
-      font-family: var(--display); font-size: clamp(56px, 9vw, 112px); font-weight: 700;
+      font-family: var(--display); font-size: clamp(56px, 8.4vw, 104px); font-weight: 700;
       line-height: 1; letter-spacing: -0.025em; margin-bottom: 16px;
     }
     .hero-name .line { display: block; }
     .hero-name .word { display: inline-block; white-space: nowrap; }
-    .hero-sub { color: var(--muted); margin-bottom: 26px; min-height: 1.6em; }
-    .hero-lede { font-size: clamp(17px, 1.6vw, 20px); line-height: 1.55; max-width: 33em; margin-bottom: 22px; }
-    .hero-facts { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 30px; }
-    .hero-facts li { background: var(--surface); border-radius: 100px; padding: 6px 14px; font-size: 13px; color: var(--muted); transition: background 0.4s; }
+    .hero-sub { color: var(--muted); margin-bottom: 20px; min-height: 1.6em; }
+    .hero-lede { font-size: clamp(17px, 1.4vw, 19px); line-height: 1.55; max-width: 35em; margin-bottom: 20px; }
+    .hero-facts { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .hero-facts li { background: var(--surface); border-radius: 100px; padding: 6px 13px; font-size: 13px; color: var(--muted); transition: background 0.4s; }
     .hero-facts strong { color: var(--text); font-weight: 600; }
-    .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 30px; }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 28px; }
 
     .socials { display: flex; flex-wrap: wrap; gap: 10px; }
     .si {
@@ -280,11 +280,7 @@
     /* ── Projects ── */
     .projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(56px, 7vw, 88px) clamp(28px, 4vw, 48px); }
     .project { position: relative; min-width: 0; }
-    .project--wide {
-      grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      gap: clamp(28px, 4.5vw, 64px); align-items: center;
-    }
-    .project--wide.flip .project-media { order: 2; }
+    .project--wide { grid-column: 1 / -1; }
 
     .project-media {
       --ph: clamp(236px, 26vw, 322px);
@@ -296,7 +292,6 @@
       background: radial-gradient(95% 85% at 50% 108%, color-mix(in srgb, var(--accent) 42%, transparent), transparent 72%), var(--surface);
       transition: background 0.4s;
     }
-    .project--wide .project-media { --ph: clamp(256px, 33vw, 404px); }
     .phones { display: flex; justify-content: center; }
     .phones img {
       height: var(--ph); width: auto; flex: none; border-radius: 16px;
@@ -313,6 +308,9 @@
     .project-media--cover .phones { position: absolute; inset: 0; }
     .project-media--cover .phones img { width: 100%; height: 100%; object-fit: cover; border-radius: 0; box-shadow: none; transform: none; }
     .project-media--cover:hover .phones img, .project-media--cover:focus-visible .phones img { transform: scale(1.03); }
+    .project-media--banner { display: block; height: auto; padding: 0; }
+    .project-media--banner > img { width: 100%; transition: transform 0.8s var(--ease); }
+    .project-media--banner:hover > img, .project-media--banner:focus-visible > img { transform: scale(1.02); }
     .media-hint {
       position: absolute; top: 14px; right: 14px; z-index: 3;
       display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px;
@@ -325,7 +323,8 @@
     .project-media:hover .media-hint, .project-media:focus-visible .media-hint { background: var(--text); color: var(--bg); border-color: var(--text); }
 
     .project-body { padding-top: 24px; }
-    .project--wide .project-body { padding-top: 0; }
+    .project--wide .project-body { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 8px clamp(28px, 5vw, 72px); padding-top: 28px; }
+    .project--wide .project-side { padding-top: 6px; }
     .project-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; font-size: 13px; color: var(--muted); margin-bottom: 10px; }
     .project-meta .num { font-family: var(--display); font-weight: 700; color: var(--text); }
     .badge { background: var(--text); color: var(--bg); border-radius: 100px; padding: 2px 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
@@ -388,7 +387,7 @@
     .hack .sub-title { padding-bottom: 16px; border-bottom: 1px solid var(--border); }
     .hack-list li { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--border); }
     .hack-date { font-size: 13px; color: var(--muted); padding-top: 2px; }
-    .hack-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; }
+    .hack-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; }
     .hack-event { font-weight: 500; }
     .hack-row a { font-family: var(--display); font-weight: 600; text-decoration: none; border-bottom: 1.5px solid var(--tag-border); transition: border-color 0.2s; }
     .hack-row a:hover { border-color: var(--text); }
@@ -467,16 +466,15 @@
     /* ── Responsive ── */
     @media (max-width: 980px) {
       :root { --gutter: 32px; }
-      .project--wide { grid-template-columns: minmax(0, 1fr); }
-      .project--wide.flip .project-media { order: 0; }
-      .project--wide .project-body { padding-top: 0; }
       .skills { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
     @media (max-width: 860px) {
-      .hero { grid-template-columns: minmax(0, 1fr); min-height: 0; padding-top: 112px; padding-bottom: 72px; }
+      .hero { grid-template-columns: minmax(0, 1fr); min-height: 0; padding-top: 112px; padding-bottom: 36px; }
       .hero-photo { order: -1; width: 128px; margin: 8px 0 32px 8px; }
       .scroll-wrap { display: none; }
       .section-head { grid-template-columns: minmax(0, 1fr); }
+      .project--wide .project-body { grid-template-columns: minmax(0, 1fr); padding-top: 24px; }
+      .project--wide .project-side { padding-top: 0; }
       .about { grid-template-columns: minmax(0, 1fr); gap: 44px; }
       .about-photo-wrap { margin-left: 10px; }
     }
@@ -485,10 +483,17 @@
       .more-item { grid-template-columns: minmax(0, 1fr); gap: 4px; }
       .more-item .num { padding-top: 0; }
       .more-status { white-space: normal; padding-top: 0; }
-      .community-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+      .hack-row { flex-direction: column; align-items: flex-start; }
+      .community-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px 12px; }
+      .photo-card { overflow: visible; background: none; border-radius: 0; }
+      .photo-card img, .photo-card:first-child img { aspect-ratio: 1; border-radius: 16px; background: var(--surface); }
+      .photo-card:hover img { transform: none; }
       .photo-card:first-child { grid-column: 1 / -1; grid-row: auto; }
-      .photo-card:first-child img { aspect-ratio: 1; }
-      .photo-card figcaption { left: 8px; right: 8px; bottom: 8px; max-width: calc(100% - 16px); font-size: 12px; padding: 6px 10px; }
+      .photo-card figcaption {
+        position: static; width: auto; max-width: none; padding: 8px 2px 0;
+        background: none; -webkit-backdrop-filter: none; backdrop-filter: none;
+        color: var(--muted); font-size: 13px;
+      }
       .viewer-stage { padding: 8px 16px; }
       .viewer-prev, .viewer-next { top: auto; bottom: 8px; transform: none; width: 42px; height: 42px; }
       .viewer-img { max-height: calc(100vh - 260px); max-height: calc(100svh - 260px); }
@@ -556,7 +561,7 @@
 
 <header class="site-header">
   <nav class="nav" aria-label="Main">
-    <a class="nav-logo" href="#main">Mi-Tech</a>
+    <a class="nav-logo" href="#top">Mi-Tech</a>
     <ul class="nav-links">
       <li><a href="#work">Projects</a></li>
       <li class="opt"><a href="#about">About</a></li>
@@ -573,7 +578,7 @@
 <main id="main" tabindex="-1">
 
   <!-- ═══════════════════ HERO ═══════════════════ -->
-  <section class="hero" aria-labelledby="hero-title">
+  <section class="hero" id="top" aria-labelledby="hero-title">
     <div class="hero-text">
       <h1 class="hero-name" id="hero-title">
         <span class="sr-only">Hi, I'm Ezechukwu Miracle.</span>
@@ -603,11 +608,11 @@
         })();
       </script>
       <p class="hero-sub" style="--d:.25s"><span id="heroSub" aria-hidden="true">Nice to meet you.</span><span class="sr-only">Nice to meet you.</span></p>
-      <p class="hero-lede" style="--d:.35s">I build cross-platform apps with Flutter, plus the AI and backend pieces behind them. This year that meant a voice co-rider for delivery riders, a calmer home for saved posts, and apps for mothers, students and savings circles.</p>
+      <p class="hero-lede" style="--d:.35s">I build cross-platform apps with Flutter, plus the AI and backends behind them: a voice co-rider for delivery riders, a calmer home for saved posts, and apps for mothers, students and savings circles.</p>
       <ul class="hero-facts" style="--d:.45s" aria-label="Highlights">
         <li><strong>6</strong> hackathon builds in 2026</li>
-        <li><strong>5</strong> Android apps with public downloads</li>
-        <li>Lead Mobile Engineer at <strong>Hustle</strong></li>
+        <li><strong>5</strong> Android apps to download</li>
+        <li>Lead Mobile Engineer, <strong>Hustle</strong></li>
       </ul>
       <div class="hero-cta" style="--d:.55s">
         <a class="btn" href="#work">See my projects <span aria-hidden="true">↓</span></a>
@@ -653,12 +658,8 @@
 
         <!-- /01 Pinne -->
         <article class="project project--wide reveal" id="pinne" aria-labelledby="pinne-title" style="--accent:#7c5cff">
-          <a class="project-media" href="assets/projects/pinne/banner.webp" data-gallery aria-label="Open Pinne screenshots (7)">
-            <span class="phones">
-              <img src="assets/projects/pinne/back-600.webp" width="287" height="600" alt="" loading="lazy" decoding="async">
-              <img src="assets/projects/pinne/home-600.webp" width="287" height="600" alt="" loading="lazy" decoding="async">
-              <img src="assets/projects/pinne/progress-600.webp" width="270" height="600" alt="" loading="lazy" decoding="async">
-            </span>
+          <a class="project-media project-media--banner" href="assets/projects/pinne/banner.webp" data-gallery aria-label="Open Pinne screenshots (7)">
+            <img src="assets/projects/pinne/banner-640.webp" srcset="assets/projects/pinne/banner-640.webp 640w, assets/projects/pinne/banner.webp 1280w" sizes="(max-width: 1120px) 100vw, 1016px" width="640" height="320" alt="" loading="lazy" decoding="async">
             <span class="media-hint" aria-hidden="true"><svg><use href="#i-expand"/></svg>7 screens</span>
           </a>
           <ul class="gallery-src" hidden>
@@ -671,36 +672,36 @@
             <li><a href="assets/projects/pinne/progress.webp" data-thumb="assets/projects/pinne/progress-600.webp" data-w="412" data-h="915">Honest progress: what you saved this week and what you actually came back to.</a></li>
           </ul>
           <div class="project-body">
-            <p class="project-meta"><span class="num">/01</span><span>Oct 2026</span><span>Solo build</span><span class="badge">Latest</span></p>
-            <h3 class="project-name" id="pinne-title">Pinne</h3>
-            <p class="project-intent">Saved posts turn into a graveyard. Pinne gives everything you save one calm home, keeps the reason you saved it, and brings it back when it would actually help.</p>
-            <ul class="project-points">
-              <li>Share from any app, even offline. A save is on the phone before it says “Saved”.</li>
-              <li>AI suggests a collection, tags and a summary. You accept or dismiss them.</li>
-              <li>Progress only counts real reviews, never just opening a link.</li>
-            </ul>
-            <dl class="project-facts">
-              <div><dt>Role</dt><dd>Everything: product, Flutter app and Serverpod backend</dd></div>
-              <div><dt>Built for</dt><dd>Serverpod’s “Build Something Real” hackathon</dd></div>
-              <div><dt>Status</dt><dd>Hackathon entry, now being built toward a public release</dd></div>
-            </dl>
-            <ul class="tags" aria-label="Tech stack">
-              <li>Flutter</li><li>Riverpod</li><li>Serverpod 4</li><li>PostgreSQL</li><li>SQLite (offline outbox)</li><li>Groq</li>
-            </ul>
-            <p class="project-links">
-              <a class="link-btn primary" href="https://github.com/MI-TECHDLIN/pinne" target="_blank" rel="noopener">Code on GitHub</a>
-            </p>
+            <div class="project-main">
+              <p class="project-meta"><span class="num">/01</span><span>Oct 2026</span><span>Solo build</span><span class="badge">Latest</span></p>
+              <h3 class="project-name" id="pinne-title">Pinne</h3>
+              <p class="project-intent">Saved posts turn into a graveyard. Pinne gives everything you save one calm home, keeps the reason you saved it, and brings it back when it would actually help.</p>
+              <ul class="project-points">
+                <li>Share from any app, even offline. A save is on the phone before it says “Saved”.</li>
+                <li>AI suggests a collection, tags and a summary. You accept or dismiss them.</li>
+                <li>Progress only counts real reviews, never just opening a link.</li>
+              </ul>
+            </div>
+            <div class="project-side">
+              <dl class="project-facts">
+                <div><dt>Role</dt><dd>Everything: product, Flutter app and Serverpod backend</dd></div>
+                <div><dt>Built for</dt><dd>Serverpod’s “Build Something Real” hackathon</dd></div>
+                <div><dt>Status</dt><dd>Hackathon entry, now being built toward a public release</dd></div>
+              </dl>
+              <ul class="tags" aria-label="Tech stack">
+                <li>Flutter</li><li>Riverpod</li><li>Serverpod 4</li><li>PostgreSQL</li><li>SQLite (offline outbox)</li><li>Groq</li>
+              </ul>
+              <p class="project-links">
+                <a class="link-btn primary" href="https://github.com/MI-TECHDLIN/pinne" target="_blank" rel="noopener">Code on GitHub</a>
+              </p>
+            </div>
           </div>
         </article>
 
         <!-- /02 Kora -->
-        <article class="project project--wide flip reveal" id="kora" aria-labelledby="kora-title" style="--accent:#8b5cf6">
-          <a class="project-media" href="assets/projects/kora/banner.webp" data-gallery aria-label="Open Kora screenshots (6)">
-            <span class="phones">
-              <img src="assets/projects/kora/offer-600.webp" width="283" height="600" alt="" loading="lazy" decoding="async">
-              <img src="assets/projects/kora/voice-600.webp" width="281" height="600" alt="" loading="lazy" decoding="async">
-              <img src="assets/projects/kora/map-600.webp" width="281" height="600" alt="" loading="lazy" decoding="async">
-            </span>
+        <article class="project project--wide reveal" id="kora" aria-labelledby="kora-title" style="--accent:#8b5cf6">
+          <a class="project-media project-media--banner" href="assets/projects/kora/banner.webp" data-gallery aria-label="Open Kora screenshots (6)">
+            <img src="assets/projects/kora/banner-600.webp" srcset="assets/projects/kora/banner-600.webp 600w, assets/projects/kora/banner.webp 1200w" sizes="(max-width: 1120px) 100vw, 1016px" width="600" height="315" alt="" loading="lazy" decoding="async">
             <span class="media-hint" aria-hidden="true"><svg><use href="#i-expand"/></svg>6 screens</span>
           </a>
           <ul class="gallery-src" hidden>
@@ -712,27 +713,31 @@
             <li><a href="assets/projects/kora/settings.webp" data-thumb="assets/projects/kora/settings-600.webp" data-w="627" data-h="1200">Settings: auto-accept rules and the hands-free “Kora” wake word.</a></li>
           </ul>
           <div class="project-body">
-            <p class="project-meta"><span class="num">/02</span><span>Sep 2026</span><span>Team of three</span></p>
-            <h3 class="project-name" id="kora-title">Kora</h3>
-            <p class="project-intent">A voice agentic co-rider for logistics riders. Riders talk instead of tapping, and Kora handles the next stop, the route and new order offers, then answers out loud so their eyes stay on the road.</p>
-            <ul class="project-points">
-              <li>Say “Hey Kora”. The wake word runs offline, on the phone.</li>
-              <li>Routes draw on an in-app map, so riders never get bounced to another app.</li>
-              <li>After a shift, it sums up the day: deliveries, targets and what went wrong.</li>
-            </ul>
-            <dl class="project-facts">
-              <div><dt>Role</dt><dd>Mobile developer: the Flutter rider app</dd></div>
-              <div><dt>Built for</dt><dd>AssemblyAI Voice Agent Hackathon on lablab.ai</dd></div>
-              <div><dt>Status</dt><dd>Working prototype with an Android release (v1.0.0)</dd></div>
-            </dl>
-            <ul class="tags" aria-label="Tech stack">
-              <li>Flutter</li><li>FastAPI</li><li>AssemblyAI Voice Agent</li><li>Supabase</li><li>MapLibre</li><li>sherpa-onnx</li><li>Rive</li>
-            </ul>
-            <p class="project-links">
-              <a class="link-btn primary" href="https://github.com/MI-TECHDLIN/kora" target="_blank" rel="noopener">Code on GitHub</a>
-              <a class="link-btn" href="https://github.com/MI-TECHDLIN/kora/releases/latest" target="_blank" rel="noopener">Download APK</a>
-              <a class="link-btn" href="https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon" target="_blank" rel="noopener">Hackathon</a>
-            </p>
+            <div class="project-main">
+              <p class="project-meta"><span class="num">/02</span><span>Sep 2026</span><span>Team of three</span></p>
+              <h3 class="project-name" id="kora-title">Kora</h3>
+              <p class="project-intent">A voice agentic co-rider for logistics riders. Riders talk instead of tapping, and Kora handles the next stop, the route and new order offers, then answers out loud so their eyes stay on the road.</p>
+              <ul class="project-points">
+                <li>Say “Hey Kora”. The wake word runs offline, on the phone.</li>
+                <li>Routes draw on an in-app map, so riders never get bounced to another app.</li>
+                <li>After a shift, it sums up the day: deliveries, targets and what went wrong.</li>
+              </ul>
+            </div>
+            <div class="project-side">
+              <dl class="project-facts">
+                <div><dt>Role</dt><dd>Mobile developer: the Flutter rider app</dd></div>
+                <div><dt>Built for</dt><dd>AssemblyAI Voice Agent Hackathon on lablab.ai</dd></div>
+                <div><dt>Status</dt><dd>Working prototype with an Android release (v1.0.0)</dd></div>
+              </dl>
+              <ul class="tags" aria-label="Tech stack">
+                <li>Flutter</li><li>FastAPI</li><li>AssemblyAI Voice Agent</li><li>Supabase</li><li>MapLibre</li><li>sherpa-onnx</li><li>Rive</li>
+              </ul>
+              <p class="project-links">
+                <a class="link-btn primary" href="https://github.com/MI-TECHDLIN/kora" target="_blank" rel="noopener">Code on GitHub</a>
+                <a class="link-btn" href="https://github.com/MI-TECHDLIN/kora/releases/latest" target="_blank" rel="noopener">Download APK</a>
+                <a class="link-btn" href="https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon" target="_blank" rel="noopener">Hackathon</a>
+              </p>
+            </div>
           </div>
         </article>
 
@@ -1072,7 +1077,7 @@
         </figure>
         <figure class="photo-card reveal">
           <img src="assets/photos/building-at-workshop-800.webp" srcset="assets/photos/building-at-workshop-800.webp 800w, assets/photos/building-at-workshop.webp 1600w" sizes="(max-width: 760px) 50vw, 440px" width="800" height="800" loading="lazy" decoding="async" alt="Ezechukwu heads-down on his laptop among other developers at a hands-on workshop">
-          <figcaption>Building at a two-day hands-on technical workshop, Sui on Campus</figcaption>
+          <figcaption>Heads-down at a two-day technical workshop, Sui on Campus</figcaption>
         </figure>
         <figure class="photo-card reveal">
           <img src="assets/photos/sui-on-campus-workshop-800.webp" srcset="assets/photos/sui-on-campus-workshop-800.webp 800w, assets/photos/sui-on-campus-workshop.webp 1440w" sizes="(max-width: 760px) 50vw, 440px" width="800" height="800" loading="lazy" decoding="async" alt="Ezechukwu smiling with headphones around his neck at the Sui on Campus technical workshop">
@@ -1222,6 +1227,8 @@
       });
     }, { rootMargin: '-45% 0px -50% 0px' });
     navLinks.forEach(function (a) { var s = document.querySelector(a.getAttribute('href')); if (s) spy.observe(s); });
+    var hero = document.getElementById('top');
+    if (hero) spy.observe(hero);
   }
 
   /* ── Cursor + magnetic buttons (mouse only) ── */

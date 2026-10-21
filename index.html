@@ -471,7 +471,7 @@
     }
     @media (max-width: 860px) {
       .hero { grid-template-columns: minmax(0, 1fr); min-height: 0; padding-top: 112px; padding-bottom: 36px; }
-      .hero-photo { order: -1; width: 128px; margin: 8px 0 32px 8px; }
+      .hero-photo { order: -1; width: clamp(120px, 22vw, 180px); margin: 8px 0 32px 8px; }
       .scroll-wrap { display: none; }
       .section-head { grid-template-columns: minmax(0, 1fr); }
       .project--wide .project-body { grid-template-columns: minmax(0, 1fr); padding-top: 24px; }
@@ -487,7 +487,7 @@
       .hack-row { flex-direction: column; align-items: flex-start; }
       .community-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px 12px; }
       .photo-card { overflow: visible; background: none; border-radius: 0; }
-      .photo-card img, .photo-card:first-child img { aspect-ratio: 1; border-radius: 16px; background: var(--surface); }
+      .photo-card img, .photo-card:first-child img { height: auto; aspect-ratio: 1; border-radius: 16px; background: var(--surface); }
       .photo-card:hover img { transform: none; }
       .photo-card:first-child { grid-column: 1 / -1; grid-row: auto; }
       .photo-card figcaption {
@@ -630,7 +630,7 @@
 
     <figure class="hero-photo" style="--d:.3s">
       <div class="hero-photo-inner">
-        <img src="assets/photos/speaking-600.webp" srcset="assets/photos/speaking-600.webp 600w, assets/photos/speaking.webp 1000w" sizes="(max-width: 860px) 128px, 290px" width="600" height="720" fetchpriority="high" alt="Ezechukwu speaking into a microphone while presenting at a tech event">
+        <img src="assets/photos/speaking-600.webp" srcset="assets/photos/speaking-600.webp 600w, assets/photos/speaking.webp 1000w" sizes="(max-width: 860px) 180px, 290px" width="600" height="720" fetchpriority="high" alt="Ezechukwu speaking into a microphone while presenting at a tech event">
       </div>
       <span class="corner corner-tl" aria-hidden="true"></span>
       <span class="corner corner-tr" aria-hidden="true"></span>

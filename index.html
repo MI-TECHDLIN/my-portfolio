@@ -1,733 +1,1328 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>mi-tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ezechukwu Miracle (Mi-Tech) · Flutter &amp; AI app engineer</title>
+  <meta name="description" content="Ezechukwu Miracle (Mi-Tech) is a Flutter and mobile engineer in Lagos, Nigeria, building AI-powered apps and the backends behind them. See recent projects, screens and downloads.">
+  <meta name="author" content="Ezechukwu Miracle">
+  <link rel="canonical" href="https://mi-tech.pages.dev/">
+  <meta name="theme-color" content="#ffffff">
 
- 
-  <link rel="icon" type="image/png"     href="favicon.png">
-  <!-- <link rel="icon" type="image/svg+xml" href="favicon.svg"> -->
-  
+  <!-- Social preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Mi-Tech">
+  <meta property="og:title" content="Ezechukwu Miracle (Mi-Tech) · Flutter & AI app engineer">
+  <meta property="og:description" content="Flutter and mobile engineer building AI-powered apps: a voice co-rider for delivery riders, a calmer home for saved posts, and tools for students, mothers and savings circles.">
+  <meta property="og:url" content="https://mi-tech.pages.dev/">
+  <meta property="og:image" content="https://mi-tech.pages.dev/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Ezechukwu Miracle, Flutter and AI app engineer, next to screens from Pinne, Kora, Ajo and Drim AI">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ezechukwu Miracle (Mi-Tech) · Flutter & AI app engineer">
+  <meta name="twitter:description" content="Flutter and mobile engineer building AI-powered apps and the backends behind them.">
+  <meta name="twitter:image" content="https://mi-tech.pages.dev/assets/og-image.jpg">
 
+  <link rel="icon" type="image/png" href="favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    /* Theme and intro flags are set before first paint to avoid a flash. */
+    (function () {
+      var root = document.documentElement, theme = null;
+      try { theme = localStorage.getItem('theme'); } catch (e) {}
+      if (theme !== 'light' && theme !== 'dark') {
+        theme = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      root.setAttribute('data-theme', theme);
+      root.classList.add('js');
+      var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var seen = true;
+      try { seen = !!sessionStorage.getItem('intro-seen'); sessionStorage.setItem('intro-seen', '1'); } catch (e) {}
+      if (!calm && !seen) root.classList.add('intro');
+    })();
+  </script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { cursor: none; overflow-x: hidden; }
 
     :root {
       --bg:         #ffffff;
+      --surface:    #f4f4f3;
       --text:       #0a0a0a;
-      --muted:      #888888;
-      --border:     #e2e2e2;
-      --tag-border: rgba(10,10,10,0.4);
+      --muted:      #595959;
+      --border:     #e3e3e3;
+      --tag-border: rgba(10,10,10,0.24);
       --btn-bg:     #0a0a0a;
       --btn-text:   #ffffff;
+      --shadow:     0 18px 40px -18px rgba(0,0,0,0.45);
+      --display:    'Space Grotesk', system-ui, sans-serif;
+      --body:       'Inter', system-ui, sans-serif;
+      --ease:       cubic-bezier(.2,.7,.2,1);
+      --maxw:       1120px;
+      --gutter:     52px;
+      --radius:     22px;
+      --hero-delay: 0.05s;
+      color-scheme: light;
     }
     [data-theme="dark"] {
       --bg:         #0d0d0d;
+      --surface:    #161616;
       --text:       #f0f0f0;
-      --muted:      #606060;
-      --border:     #242424;
-      --tag-border: rgba(240,240,240,0.35);
+      --muted:      #a6a6a6;
+      --border:     #262626;
+      --tag-border: rgba(240,240,240,0.26);
       --btn-bg:     #f0f0f0;
       --btn-text:   #0a0a0a;
+      --shadow:     0 18px 44px -16px rgba(0,0,0,0.85);
+      color-scheme: dark;
     }
+    .intro { --hero-delay: 0.85s; }
+
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: var(--body); font-size: 16px; line-height: 1.6;
       background: var(--bg); color: var(--text);
+      overflow-x: hidden; -webkit-font-smoothing: antialiased;
       transition: background 0.4s ease, color 0.4s ease;
     }
+    @supports (overflow: clip) { body { overflow-x: clip; } }
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; }
+    button { font: inherit; color: inherit; }
+    ul, ol { list-style: none; }
+    :focus-visible { outline: 2px solid var(--text); outline-offset: 3px; border-radius: 8px; }
+    [id] { scroll-margin-top: 88px; }
 
-    /* ── Preloader ── */
-    #preloader {
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+    .skip-link {
+      position: fixed; left: 16px; top: -80px; z-index: 10000;
+      background: var(--btn-bg); color: var(--btn-text);
+      padding: 10px 18px; border-radius: 100px; font-weight: 500; text-decoration: none;
+      transition: top 0.2s;
+    }
+    .skip-link:focus { top: 12px; }
+
+    /* External links get an arrow, read out as "opens in a new tab" */
+    a[target="_blank"]:not(.si)::after { content: "\2197"; content: "\2197" / " (opens in a new tab)"; margin-left: 4px; }
+
+    /* ── Preloader (first visit only) ── */
+    #preloader { display: none; }
+    .intro #preloader {
       position: fixed; inset: 0; z-index: 9999;
-      background: var(--bg);
       display: flex; align-items: center; justify-content: center;
+      background: var(--bg); transform-origin: top;
+      animation: pre-out 0.6s cubic-bezier(.76,0,.24,1) 0.75s forwards;
     }
     .pre-logo {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700; font-size: 52px; letter-spacing: -0.02em;
-      opacity: 0; transform: translateY(20px);
+      font-family: var(--display); font-weight: 700; font-size: clamp(34px, 6vw, 52px); letter-spacing: -0.02em;
+      animation: pre-logo 0.95s ease both;
     }
+    @keyframes pre-logo { 0% { opacity: 0; transform: translateY(20px); } 35%, 72% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+    @keyframes pre-out { to { transform: scaleY(0); visibility: hidden; } }
 
-    /* ── Progress ── */
+    /* ── Scroll progress ── */
     #prog {
       position: fixed; top: 0; left: 0; right: 0; z-index: 300;
       height: 2px; background: var(--text);
-      transform-origin: left; transform: scaleX(0);
-      transition: background 0.4s; pointer-events: none;
+      transform-origin: left; transform: scaleX(0); pointer-events: none;
     }
 
-    /* ── Cursor ── */
-    #cur-dot {
-      position: fixed; z-index: 9999; pointer-events: none;
-      width: 6px; height: 6px; border-radius: 50%; background: var(--text);
-      transform: translate(-50%,-50%); transition: background 0.4s, width 0.2s, height 0.2s;
-    }
-    #cur-ring {
-      position: fixed; z-index: 9998; pointer-events: none;
-      width: 38px; height: 38px; border-radius: 50%;
-      border: 1.5px solid var(--text);
-      transform: translate(-50%,-50%);
-      transition: border-color 0.4s, width 0.25s ease, height 0.25s ease;
-    }
-    body.cursor-hover #cur-dot  { width: 8px; height: 8px; }
-    body.cursor-hover #cur-ring { width: 54px; height: 54px; }
+    /* ── Custom cursor (fine pointers only, added by script) ── */
+    .cursor { display: none; }
+    .has-cursor .cursor { display: block; position: fixed; left: 0; top: 0; z-index: 9998; pointer-events: none; transition: opacity 0.3s; }
+    .cursor span { display: block; border-radius: 50%; transition: transform 0.25s var(--ease), background 0.4s, border-color 0.4s; }
+    #cur-dot span  { width: 6px; height: 6px; margin: -3px 0 0 -3px; background: var(--text); }
+    #cur-ring span { width: 38px; height: 38px; margin: -19px 0 0 -19px; border: 1.5px solid var(--text); }
+    .cursor-hover #cur-ring span { transform: scale(1.42); }
+    .cursor-hover #cur-dot span  { transform: scale(1.35); }
+    .cursor-out .cursor { opacity: 0; }
+    .has-cursor body, .has-cursor a, .has-cursor button { cursor: none; }
+    .has-cursor dialog, .has-cursor dialog * { cursor: auto; }
+    .has-cursor dialog button { cursor: pointer; }
 
-    /* ── Nav ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 26px 52px; background: var(--bg); transition: background 0.4s;
+    /* ── Header ── */
+    .site-header {
+      position: fixed; inset: 0 0 auto 0; z-index: 200;
+      background: var(--bg);
+      background: color-mix(in srgb, var(--bg) 84%, transparent);
+      -webkit-backdrop-filter: saturate(1.4) blur(14px); backdrop-filter: saturate(1.4) blur(14px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s, background 0.4s;
     }
-    .nav-logo { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:17px; letter-spacing:.06em; }
-    .dark-btn { background:none; border:none; cursor:none; font-size:20px; color:var(--text); transition:color 0.4s; line-height:1; }
+    .site-header.scrolled { border-bottom-color: var(--border); }
+    .nav {
+      max-width: var(--maxw); margin: 0 auto; padding: 20px var(--gutter);
+      display: flex; align-items: center; gap: 16px;
+    }
+    .nav-logo { font-family: var(--display); font-weight: 700; font-size: 17px; letter-spacing: 0.06em; text-decoration: none; margin-right: auto; }
+    .nav-links { display: flex; align-items: center; gap: clamp(16px, 2.6vw, 32px); }
+    .nav-links a {
+      position: relative; display: inline-block; padding: 6px 0;
+      font-size: 14px; font-weight: 500; text-decoration: none; color: var(--muted); transition: color 0.2s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; left: 0; bottom: 0; height: 1.5px; width: 100%;
+      background: var(--text); transform: scaleX(0); transform-origin: left; transition: transform 0.35s var(--ease);
+    }
+    .nav-links a:hover, .nav-links a[aria-current="true"] { color: var(--text); }
+    .nav-links a[aria-current="true"]::after, .nav-links a:hover::after { transform: scaleX(1); }
+    .theme-btn {
+      width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--border);
+      background: none; display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: border-color 0.2s, transform 0.5s cubic-bezier(.2,1.6,.4,1);
+    }
+    .theme-btn:hover { border-color: var(--text); }
+    .theme-btn svg { width: 17px; height: 17px; }
+    [data-theme="dark"] .theme-btn .i-moon, .theme-btn .i-sun { display: none; }
+    [data-theme="dark"] .theme-btn .i-sun { display: block; }
 
     /* ── Layout ── */
-    .wrap { max-width: 1060px; margin: 0 auto; padding: 0 52px; }
-    .section { padding: 80px 0; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
+    .section { padding: clamp(72px, 10vw, 120px) 0; }
+    .section-head {
+      display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 25em); align-items: end;
+      gap: 18px 48px; padding-bottom: 28px; margin-bottom: clamp(40px, 5vw, 60px);
+      border-bottom: 1px solid var(--border);
+    }
     .section-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(38px,6.5vw,78px); font-weight: 700;
-      letter-spacing: -0.025em; margin-bottom: 24px;
+      font-family: var(--display); font-size: clamp(40px, 6.5vw, 78px); font-weight: 700;
+      line-height: 1; letter-spacing: -0.025em;
     }
-    .div { border: none; border-top: 1px solid var(--border); margin: 0; }
+    .section-lede { color: var(--muted); }
+    .sub-title { font-family: var(--display); font-size: clamp(22px, 2.4vw, 28px); font-weight: 600; letter-spacing: -0.01em; }
 
-    /* ══════════════════════════════════════════════════════════
-       PHOTO LAYOUT 1 — HERO
-       Corner-bracket portrait, top-right of hero.
-       Replace src in .hero-photo-inner img
-    ══════════════════════════════════════════════════════════ */
-    #hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 130px 52px 80px;
-      max-width: 1060px; margin: 0 auto; position: relative;
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--btn-bg); color: var(--btn-text); border: 1.5px solid var(--btn-bg);
+      padding: 13px 24px; border-radius: 100px;
+      font-size: 14px; font-weight: 500; text-decoration: none;
+      transition: opacity 0.2s, background 0.4s, color 0.4s, border-color 0.2s;
     }
-    .hero-photo-wrap {
-      position: absolute; top: 148px; right: 52px;
-      width: 260px; height: 330px;
-    }
-    .hero-photo-inner {
-      width: 100%; height: 100%; overflow: hidden;
-      background: var(--border);
-      /* subtle inner border */
-      outline: 1px solid var(--border);
-    }
-    .hero-photo-inner img {
-      width: 100%; height: 100%; object-fit: cover;
-      display: block;
-    }
-    /* 4 corner bracket accents */
-    .corner {
-      position: absolute; width: 14px; height: 14px;
-      transition: border-color 0.4s;
-    }
-    .corner-tl { top:-7px; left:-7px;  border-top:2px solid var(--text); border-left:2px solid var(--text); }
-    .corner-tr { top:-7px; right:-7px; border-top:2px solid var(--text); border-right:2px solid var(--text); }
-    .corner-bl { bottom:-7px; left:-7px;  border-bottom:2px solid var(--text); border-left:2px solid var(--text); }
-    .corner-br { bottom:-7px; right:-7px; border-bottom:2px solid var(--text); border-right:2px solid var(--text); }
+    .btn:hover { opacity: 0.8; }
+    .btn-ghost { background: transparent; color: var(--text); border-color: var(--tag-border); }
+    .btn-ghost:hover { opacity: 1; border-color: var(--text); }
 
-    /* Hero text */
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tags li {
+      border: 1.5px solid var(--tag-border); padding: 5px 13px; border-radius: 100px;
+      font-size: 12px; font-weight: 500; line-height: 1.5;
+      transition: background 0.22s, color 0.22s, border-color 0.22s;
+    }
+    .skills .tags li:hover { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative; max-width: var(--maxw); margin: 0 auto;
+      min-height: 100vh; min-height: 100svh;
+      padding: 132px var(--gutter) 104px;
+      display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center;
+      column-gap: clamp(32px, 5vw, 72px);
+    }
     .hero-name {
-      font-family:'Space Grotesk',sans-serif;
-      font-size:clamp(58px,9.5vw,118px); font-weight:700;
-      line-height:1.0; letter-spacing:-0.025em; margin-bottom:18px;
+      font-family: var(--display); font-size: clamp(56px, 9vw, 112px); font-weight: 700;
+      line-height: 1; letter-spacing: -0.025em; margin-bottom: 16px;
     }
-    .char { display:inline-block; will-change:transform; }
-    .hero-sub { color:var(--muted); font-size:16px; margin-bottom:52px; min-height:24px; }
+    .hero-name .line { display: block; }
+    .hero-name .word { display: inline-block; white-space: nowrap; }
+    .hero-sub { color: var(--muted); margin-bottom: 26px; min-height: 1.6em; }
+    .hero-lede { font-size: clamp(17px, 1.6vw, 20px); line-height: 1.55; max-width: 33em; margin-bottom: 22px; }
+    .hero-facts { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 30px; }
+    .hero-facts li { background: var(--surface); border-radius: 100px; padding: 6px 14px; font-size: 13px; color: var(--muted); transition: background 0.4s; }
+    .hero-facts strong { color: var(--text); font-weight: 600; }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 30px; }
 
-    /* Socials */
-    .socials { display:flex; flex-wrap:wrap; gap:10px; }
+    .socials { display: flex; flex-wrap: wrap; gap: 10px; }
     .si {
-      width:46px; height:46px; border:1.5px solid var(--border); border-radius:50%;
-      display:flex; align-items:center; justify-content:center;
-      text-decoration:none; color:var(--text);
-      transition:background 0.22s, border-color 0.22s, color 0.22s;
-      cursor:none; will-change:transform;
+      width: 46px; height: 46px; border: 1.5px solid var(--border); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; text-decoration: none;
+      transition: background 0.22s, border-color 0.22s, color 0.22s, transform 0.5s cubic-bezier(.2,1.6,.4,1);
     }
-    .si:hover { background:var(--text); color:var(--bg); border-color:var(--text); }
-    .si svg { width:17px; height:17px; flex-shrink:0; }
+    .si:hover { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .si svg { width: 17px; height: 17px; }
+
+    /* Corner-bracket portrait */
+    .hero-photo { position: relative; width: clamp(230px, 23vw, 290px); margin: 0; align-self: center; }
+    .hero-photo-inner { aspect-ratio: 5 / 6; overflow: hidden; background: var(--surface); outline: 1px solid var(--border); }
+    .hero-photo-inner img { width: 100%; height: 100%; object-fit: cover; }
+    .corner { position: absolute; width: 14px; height: 14px; transition: border-color 0.4s; }
+    .corner-tl { top: -7px; left: -7px; border-top: 2px solid var(--text); border-left: 2px solid var(--text); }
+    .corner-tr { top: -7px; right: -7px; border-top: 2px solid var(--text); border-right: 2px solid var(--text); }
+    .corner-bl { bottom: -7px; left: -7px; border-bottom: 2px solid var(--text); border-left: 2px solid var(--text); }
+    .corner-br { bottom: -7px; right: -7px; border-bottom: 2px solid var(--text); border-right: 2px solid var(--text); }
 
     /* Scroll indicator */
-    .scroll-wrap { position:absolute; bottom:56px; right:52px; width:108px; height:108px; }
-    .scroll-svg { width:100%; height:100%; animation:spin 10s linear infinite; fill:none; }
-    .scroll-svg text { fill:var(--text); font-size:10.5px; font-family:'Inter',sans-serif; letter-spacing:3.8px; }
+    .scroll-wrap { position: absolute; bottom: 40px; right: var(--gutter); width: 108px; height: 108px; display: block; text-decoration: none; border-radius: 50%; }
+    .scroll-svg { width: 100%; height: 100%; animation: spin 10s linear infinite; fill: none; }
+    .scroll-svg text { fill: var(--text); font-size: 10.5px; font-family: var(--body); letter-spacing: 3.8px; }
     .scroll-mouse {
-      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-      width:22px; height:35px; border:2px solid var(--text); border-radius:11px;
-      display:flex; justify-content:center; align-items:flex-start; padding-top:6px;
-      transition:border-color 0.4s;
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 22px; height: 35px; border: 2px solid var(--text); border-radius: 11px;
+      display: flex; justify-content: center; padding-top: 6px;
     }
-    .scroll-wheel { width:3px; height:8px; background:var(--text); border-radius:2px; transition:background 0.4s; animation:wheel 1.6s ease-in-out infinite; }
-    @keyframes spin  { to { transform:rotate(360deg); } }
-    @keyframes wheel { 0%,100% { transform:translateY(0); opacity:1; } 55% { transform:translateY(5px); opacity:0.3; } }
+    .scroll-wheel { width: 3px; height: 8px; background: var(--text); border-radius: 2px; animation: wheel 1.6s ease-in-out infinite; }
+    @keyframes spin  { to { transform: rotate(360deg); } }
+    @keyframes wheel { 0%, 100% { transform: translateY(0); opacity: 1; } 55% { transform: translateY(5px); opacity: 0.3; } }
 
-    /* ══════════════════════════════════════════════════════════
-       PHOTO LAYOUT 2 — ABOUT
-       Double-ring circle. Replace src in .about-photo-inner img
-    ══════════════════════════════════════════════════════════ */
-    .about-inner { display:flex; gap:100px; align-items:center; }
-    .about-photo-wrap {
-      position: relative; width:300px; height:300px; flex-shrink:0;
-    }
-    /* outer dashed ring */
-    .about-photo-wrap::before {
-      content:''; position:absolute; inset:-10px; border-radius:50%;
-      border:1px dashed var(--border); transition:border-color 0.4s;
-    }
-    /* inner thin ring */
-    .about-photo-wrap::after {
-      content:''; position:absolute; inset:-3px; border-radius:50%;
-      border:1px solid var(--border); transition:border-color 0.4s;
-    }
-    .about-photo-inner {
-      width:100%; height:100%; border-radius:50%; overflow:hidden;
-      background:var(--border);
-      display:flex; align-items:center; justify-content:center;
-      color:var(--muted); font-size:13px; text-align:center; padding:10px;
-    }
-   .about-photo-inner img { width: 100%; height: 100%; object-fit: cover; object-position: center ; transform: scale(1.02); border-radius: 50%; }
-    .about-label { font-size:13px; color:var(--muted); margin-bottom:18px; }
-    .about-bio p { font-size:21px; font-weight:500; line-height:1.45; margin-bottom:18px; }
-    .btn {
-      display:inline-flex; align-items:center; gap:6px;
-      background:var(--btn-bg); color:var(--btn-text);
-      padding:14px 26px; border-radius:100px;
-      font-size:14px; font-weight:500; text-decoration:none;
-      cursor:none; transition:opacity 0.2s, background 0.4s, color 0.4s; margin-top:12px;
-    }
-    .btn:hover { opacity:.78; }
+    /* Hero entrance */
+    .hero-text > *, .hero-photo, .scroll-wrap { animation: rise 0.9s var(--ease) both; animation-delay: calc(var(--hero-delay) + var(--d, 0s)); }
+    .split .hero-name { animation: none; }
+    .split .char { display: inline-block; animation: char-in 0.7s var(--ease) both; animation-delay: calc(var(--hero-delay) + var(--i) * 16ms); }
+    @keyframes rise { from { opacity: 0; transform: translateY(18px); } }
+    @keyframes char-in { from { opacity: 0; transform: translateY(0.55em); } }
 
-    /* Skills */
-    .skills-grid { display:flex; flex-wrap:wrap; gap:10px; margin-top:52px; }
-    .skill-tag {
-      border:1.5px solid var(--tag-border); padding:7px 16px; border-radius:100px;
-      font-size:13px; font-weight:500; color:var(--text); cursor:none;
-      transition:background 0.22s, color 0.22s, border-color 0.22s;
+    /* ── Projects ── */
+    .projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(56px, 7vw, 88px) clamp(28px, 4vw, 48px); }
+    .project { position: relative; min-width: 0; }
+    .project--wide {
+      grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: clamp(28px, 4.5vw, 64px); align-items: center;
     }
-    .skill-tag:hover { background:var(--text); color:var(--bg); border-color:var(--text); }
+    .project--wide.flip .project-media { order: 2; }
 
-    /* Experience */
-    .exp-item { display:flex; align-items:center; gap:20px; padding:28px 0; }
-    .exp-logo {
-      width:54px; height:54px; border-radius:12px; background:#d8d8d8; flex-shrink:0;
-      display:flex; align-items:center; justify-content:center;
-      font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:20px; color:#888;
-      overflow:hidden;
+    .project-media {
+      --ph: clamp(236px, 26vw, 322px);
+      position: relative; isolation: isolate; overflow: hidden;
+      display: flex; justify-content: center;
+      height: calc(var(--ph) * 0.94); padding-top: calc(var(--ph) * 0.1);
+      border-radius: var(--radius); text-decoration: none;
+      background: var(--surface);
+      background: radial-gradient(95% 85% at 50% 108%, color-mix(in srgb, var(--accent) 42%, transparent), transparent 72%), var(--surface);
+      transition: background 0.4s;
     }
-    .exp-logo img { width:100%; height:100%; object-fit:cover; filter:grayscale(1); }
-    .exp-info { flex:1; }
-    .exp-name { font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:18px; }
-    .exp-role { font-size:13px; color:var(--muted); margin-top:3px; }
-    .exp-date { font-size:13px; color:var(--muted); white-space:nowrap; }
+    .project--wide .project-media { --ph: clamp(256px, 33vw, 404px); }
+    .phones { display: flex; justify-content: center; }
+    .phones img {
+      height: var(--ph); width: auto; flex: none; border-radius: 16px;
+      box-shadow: var(--shadow); background: var(--surface);
+      transition: transform 0.6s var(--ease);
+    }
+    .phones img:nth-child(1) { z-index: 1; transform: translate(16%, 9%) rotate(-5deg) scale(0.86); }
+    .phones img:nth-child(2) { z-index: 2; }
+    .phones img:nth-child(3) { z-index: 1; transform: translate(-16%, 9%) rotate(5deg) scale(0.86); }
+    .project-media:hover .phones img:nth-child(1), .project-media:focus-visible .phones img:nth-child(1) { transform: translate(8%, 7%) rotate(-8deg) scale(0.86); }
+    .project-media:hover .phones img:nth-child(2), .project-media:focus-visible .phones img:nth-child(2) { transform: translateY(-10px); }
+    .project-media:hover .phones img:nth-child(3), .project-media:focus-visible .phones img:nth-child(3) { transform: translate(-8%, 7%) rotate(8deg) scale(0.86); }
+    .project-media--cover { padding: 0; }
+    .project-media--cover .phones { position: absolute; inset: 0; }
+    .project-media--cover .phones img { width: 100%; height: 100%; object-fit: cover; border-radius: 0; box-shadow: none; transform: none; }
+    .project-media--cover:hover .phones img, .project-media--cover:focus-visible .phones img { transform: scale(1.03); }
+    .media-hint {
+      position: absolute; top: 14px; right: 14px; z-index: 3;
+      display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px;
+      border-radius: 100px; font-size: 12px; font-weight: 500; color: var(--text);
+      background: var(--bg); background: color-mix(in srgb, var(--bg) 80%, transparent);
+      -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+      border: 1px solid var(--border); transition: background 0.2s, color 0.2s;
+    }
+    .media-hint svg { width: 12px; height: 12px; }
+    .project-media:hover .media-hint, .project-media:focus-visible .media-hint { background: var(--text); color: var(--bg); border-color: var(--text); }
 
-    /* Projects */
-    .proj-item {
-      display:grid; grid-template-columns:1fr auto; gap:20px; padding:34px 0;
-      cursor:pointer; transition:background 0.25s ease, padding 0.25s ease; border-radius:4px;
+    .project-body { padding-top: 24px; }
+    .project--wide .project-body { padding-top: 0; }
+    .project-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+    .project-meta .num { font-family: var(--display); font-weight: 700; color: var(--text); }
+    .badge { background: var(--text); color: var(--bg); border-radius: 100px; padding: 2px 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+    .project-name { font-family: var(--display); font-weight: 700; font-size: clamp(28px, 3.2vw, 38px); line-height: 1.05; letter-spacing: -0.015em; margin-bottom: 12px; }
+    .project-intent { font-size: 17px; line-height: 1.55; margin-bottom: 16px; }
+    .project-points { display: grid; gap: 8px; margin-bottom: 20px; font-size: 15px; color: var(--muted); }
+    .project-points li { position: relative; padding-left: 22px; }
+    .project-points li::before { content: ''; position: absolute; left: 1px; top: 0.78em; width: 10px; height: 2px; background: var(--text); }
+    .project-facts { display: grid; gap: 7px; margin-bottom: 20px; font-size: 14px; }
+    .project-facts div { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 12px; }
+    .project-facts dt { color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; padding-top: 3px; }
+    .project .tags { margin-bottom: 22px; }
+    .project-links { display: flex; flex-wrap: wrap; gap: 10px; }
+    .link-btn {
+      display: inline-flex; align-items: center; padding: 9px 16px; border-radius: 100px;
+      font-size: 13px; font-weight: 500; text-decoration: none;
+      border: 1.5px solid var(--tag-border); transition: background 0.2s, color 0.2s, border-color 0.2s;
     }
-    .proj-item:hover { background:rgba(0,0,0,0.018); padding-left:8px; padding-right:8px; }
-    [data-theme="dark"] .proj-item:hover { background:rgba(255,255,255,0.025); }
-    .proj-name {
-      font-family:'Space Grotesk',sans-serif; font-weight:700;
-      font-size:clamp(22px,2.8vw,32px); margin-bottom:12px;
-      position:relative; display:inline-block;
-    }
-    .proj-name::after {
-      content:''; position:absolute; bottom:-3px; left:0;
-      height:2px; background:var(--text); width:0; transition:width 0.4s ease;
-    }
-    .proj-item:hover .proj-name::after { width:100%; }
-    .proj-desc { font-size:14px; color:var(--muted); max-width:520px; line-height:1.65; margin-bottom:18px; }
-    .tags { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
-    .tag { border:1.5px solid var(--tag-border); padding:6px 14px; border-radius:100px; font-size:12px; font-weight:500; color:var(--text); transition:border-color 0.4s, color 0.4s; }
-    .proj-num { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:19px; color:var(--muted); white-space:nowrap; align-self:start; padding-top:6px; transition:color 0.3s; }
-    .proj-item:hover .proj-num { color:var(--text); }
-    .proj-gh {
-      display:inline-flex; align-items:center; gap:4px;
-      font-size:12px; color:var(--muted); text-decoration:none;
-      cursor:none; transition:color 0.2s;
-    }
-    .proj-gh:hover { color:var(--text); }
+    .link-btn:hover { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .link-btn.primary { background: var(--btn-bg); color: var(--btn-text); border-color: var(--btn-bg); }
+    .link-btn.primary:hover { opacity: 0.82; }
 
-    /* ══════════════════════════════════════════════════════════
-       PHOTO LAYOUT 3 — FOOTER BACKGROUND
-       A faded full-width photo sits behind footer content.
-       Replace src in .footer-bg-photo img
-    ══════════════════════════════════════════════════════════ */
-    footer {
-      position: relative; overflow: hidden;
-      border-top: 1px solid var(--border);
-      padding: 52px 52px;
-      max-width: 1060px; margin: 0 auto;
+    /* More projects (lighter list, the original project-row style) */
+    .more { margin-top: clamp(80px, 10vw, 120px); }
+    .more-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
+    .more-head p { color: var(--muted); font-size: 15px; }
+    .more-item {
+      display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 8px 24px; align-items: start;
+      padding: 28px 0; border-bottom: 1px solid var(--border);
     }
-    .footer-bg-photo {
-      position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:0;
+    .more-item .num { font-family: var(--display); font-weight: 700; font-size: 17px; color: var(--muted); padding-top: 4px; transition: color 0.3s; }
+    .more-item:hover .num { color: var(--text); }
+    .more-name { font-family: var(--display); font-weight: 700; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.2; margin-bottom: 6px; }
+    .more-role { font-family: var(--body); font-size: 13px; font-weight: 500; color: var(--muted); margin-left: 10px; letter-spacing: 0; }
+    .more-desc { color: var(--muted); font-size: 15px; max-width: 40em; margin-bottom: 14px; }
+    .more-status { font-size: 13px; color: var(--muted); white-space: nowrap; padding-top: 6px; }
+    .more-status a { color: var(--text); font-weight: 500; text-decoration: none; border-bottom: 1.5px solid var(--tag-border); transition: border-color 0.2s; }
+    .more-status a:hover { border-color: var(--text); }
+
+    /* ── About ── */
+    .about { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(40px, 8vw, 100px); align-items: center; }
+    .about-photo-wrap { position: relative; width: clamp(210px, 26vw, 300px); aspect-ratio: 1; }
+    .about-photo-wrap::before { content: ''; position: absolute; inset: -10px; border-radius: 50%; border: 1px dashed var(--tag-border); }
+    .about-photo-wrap::after  { content: ''; position: absolute; inset: -3px; border-radius: 50%; border: 1px solid var(--border); }
+    .about-photo-inner { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; background: var(--surface); }
+    .about-photo-inner img { width: 100%; height: 100%; object-fit: cover; }
+    .about-label { font-size: 13px; font-weight: 500; color: var(--muted); margin-bottom: 18px; }
+    .about-bio p { font-size: clamp(18px, 2vw, 21px); font-weight: 500; line-height: 1.45; margin-bottom: 16px; }
+    .about-bio p.about-more { font-size: 16px; font-weight: 400; line-height: 1.7; color: var(--muted); max-width: 36em; }
+    .about .btn { margin-top: 8px; }
+    .skills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: clamp(56px, 7vw, 80px); padding-top: 36px; border-top: 1px solid var(--border); }
+    .skills h3 { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+
+    /* ── Experience ── */
+    .exp-item { display: flex; align-items: center; gap: 20px; padding: 28px 0; border-bottom: 1px solid var(--border); }
+    .exp-name { font-family: var(--display); font-weight: 600; font-size: 20px; }
+    .exp-role { font-size: 14px; color: var(--muted); }
+    .exp-date { margin-left: auto; font-size: 14px; color: var(--muted); white-space: nowrap; }
+    .hack { margin-top: 64px; }
+    .hack .sub-title { padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .hack-list li { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--border); }
+    .hack-date { font-size: 13px; color: var(--muted); padding-top: 2px; }
+    .hack-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; }
+    .hack-event { font-weight: 500; }
+    .hack-row a { font-family: var(--display); font-weight: 600; text-decoration: none; border-bottom: 1.5px solid var(--tag-border); transition: border-color 0.2s; }
+    .hack-row a:hover { border-color: var(--text); }
+    .hack-note { display: block; font-size: 13px; color: var(--muted); }
+
+    /* ── Community ── */
+    .community-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 16px; }
+    .photo-card { position: relative; margin: 0; border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+    .photo-card:first-child { grid-row: span 2; }
+    .photo-card img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 1; transition: transform 0.8s var(--ease); }
+    .photo-card:first-child img { aspect-ratio: auto; }
+    .photo-card:hover img { transform: scale(1.03); }
+    .photo-card figcaption {
+      position: absolute; left: 12px; right: 12px; bottom: 12px; width: fit-content; max-width: calc(100% - 24px);
+      padding: 8px 13px; border-radius: 12px; font-size: 13px; line-height: 1.45; color: #fff;
+      background: rgba(10,10,10,0.74); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
     }
-    .footer-bg-photo img {
-      width:100%; height:100%; object-fit:cover; object-position:center top;
-      filter:grayscale(1); opacity:0.06;
-      transition:opacity 0.4s;
-    }
-    [data-theme="dark"] .footer-bg-photo img { opacity:0.09; }
+
+    /* ── Contact ── */
+    .contact { text-align: center; padding: clamp(80px, 11vw, 140px) 0; border-top: 1px solid var(--border); }
+    .contact-title { font-family: var(--display); font-size: clamp(36px, 6vw, 72px); font-weight: 700; line-height: 1.02; letter-spacing: -0.025em; max-width: 13em; margin: 0 auto 18px; }
+    .contact p { color: var(--muted); max-width: 32em; margin: 0 auto 30px; }
+    .contact .btn { font-size: 15px; padding: 15px 28px; overflow-wrap: anywhere; }
+
+    /* ── Footer (faded photo behind) ── */
+    .site-footer { position: relative; overflow: hidden; border-top: 1px solid var(--border); }
+    .footer-bg-photo { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+    .footer-bg-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; filter: grayscale(1); opacity: 0.06; }
+    [data-theme="dark"] .footer-bg-photo img { opacity: 0.09; }
     .footer-inner {
-      position:relative; z-index:1;
-      display:flex; justify-content:space-between; align-items:center;
-      flex-wrap:wrap; gap:24px;
+      position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; padding: 48px var(--gutter);
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px;
     }
-    .footer-copy { font-size:14px; color:var(--muted); }
-    .footer-contact { text-align:right; font-size:14px; color:var(--muted); line-height:1.8; }
+    .footer-copy, .footer-contact { font-size: 14px; color: var(--muted); }
+    .footer-contact { text-align: right; line-height: 1.8; }
+    .footer-contact a { text-decoration: none; }
+    .footer-contact a:hover { color: var(--text); }
 
-    /* Mobile */
-    @media (max-width: 768px) {
-      nav, footer { padding: 20px 24px; }
-      #hero { padding: 110px 24px 70px; }
-      .wrap { padding: 0 24px; }
-      .section { padding: 60px 0; }
-      .about-inner { flex-direction: column; gap: 36px; }
-      .about-photo-wrap { width: 210px; height: 210px; }
-      .about-bio p { font-size: 18px; }
-      .scroll-wrap, .hero-photo-wrap { display: none; }
+    /* ── Screenshot viewer ── */
+    .viewer {
+      position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none;
+      margin: 0; padding: 0; border: 0; background: rgba(8,8,8,0.95); color: #f0f0f0; overscroll-behavior: contain;
+    }
+    .viewer[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; }
+    .viewer::backdrop { background: rgba(0,0,0,0.5); }
+    .viewer-bar { display: flex; align-items: center; gap: 16px; padding: 14px 18px 6px 22px; }
+    .viewer-title { font-family: var(--display); font-weight: 700; font-size: 19px; }
+    .viewer-count { font-size: 13px; color: #a6a6a6; margin-right: auto; }
+    .viewer-btn {
+      width: 46px; height: 46px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.06); color: #fff; display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.2s, border-color 0.2s;
+    }
+    .viewer-btn:hover { background: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.5); }
+    .viewer-btn svg { width: 20px; height: 20px; }
+    .viewer :focus-visible { outline-color: #fff; }
+    .viewer-stage { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 8px 76px; min-height: 0; }
+    .viewer-img { width: auto; height: auto; max-width: 100%; max-height: calc(100vh - 230px); max-height: calc(100svh - 230px); object-fit: contain; border-radius: 18px; box-shadow: 0 30px 80px -20px rgba(0,0,0,0.9); }
+    .viewer-caption { font-size: 14px; color: #cfcfcf; text-align: center; max-width: 34em; min-height: 1.5em; }
+    .viewer-prev, .viewer-next { position: absolute; top: 50%; transform: translateY(-50%); }
+    .viewer-prev { left: 18px; }
+    .viewer-next { right: 18px; }
+    .viewer-thumbs { display: flex; gap: 8px; justify-content: center; padding: 10px 16px 20px; overflow-x: auto; }
+    .viewer-thumb { flex: none; height: 64px; padding: 0; border: 2px solid transparent; border-radius: 10px; background: none; overflow: hidden; opacity: 0.55; cursor: pointer; transition: opacity 0.2s, border-color 0.2s; }
+    .viewer-thumb img { height: 100%; width: auto; }
+    .viewer-thumb:hover { opacity: 0.9; }
+    .viewer-thumb[aria-current="true"] { opacity: 1; border-color: #fff; }
+    .viewer.single .viewer-prev, .viewer.single .viewer-next, .viewer.single .viewer-thumbs, .viewer.single .viewer-count { display: none; }
+    html:has(.viewer[open]) { overflow: hidden; }
+
+    /* ── Scroll reveal (only once the script is running) ── */
+    .reveal-ready .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
+    .reveal-ready .reveal.in { opacity: 1; transform: none; }
+    .reveal-ready .projects .project:nth-child(odd).reveal { transition-delay: 0.08s; }
+
+    /* ── Responsive ── */
+    @media (max-width: 980px) {
+      :root { --gutter: 32px; }
+      .project--wide { grid-template-columns: minmax(0, 1fr); }
+      .project--wide.flip .project-media { order: 0; }
+      .project--wide .project-body { padding-top: 0; }
+      .skills { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: minmax(0, 1fr); min-height: 0; padding-top: 112px; padding-bottom: 72px; }
+      .hero-photo { order: -1; width: 128px; margin: 8px 0 32px 8px; }
+      .scroll-wrap { display: none; }
+      .section-head { grid-template-columns: minmax(0, 1fr); }
+      .about { grid-template-columns: minmax(0, 1fr); gap: 44px; }
+      .about-photo-wrap { margin-left: 10px; }
+    }
+    @media (max-width: 760px) {
+      .projects { grid-template-columns: minmax(0, 1fr); }
+      .more-item { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+      .more-item .num { padding-top: 0; }
+      .more-status { white-space: normal; padding-top: 0; }
+      .community-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+      .photo-card:first-child { grid-column: 1 / -1; grid-row: auto; }
+      .photo-card:first-child img { aspect-ratio: 1; }
+      .photo-card figcaption { left: 8px; right: 8px; bottom: 8px; max-width: calc(100% - 16px); font-size: 12px; padding: 6px 10px; }
+      .viewer-stage { padding: 8px 16px; }
+      .viewer-prev, .viewer-next { top: auto; bottom: 8px; transform: none; width: 42px; height: 42px; }
+      .viewer-img { max-height: calc(100vh - 260px); max-height: calc(100svh - 260px); }
+      .viewer-caption { padding: 0 50px; }
+    }
+    @media (max-width: 640px) {
+      :root { --gutter: 20px; }
+      .nav { padding-top: 16px; padding-bottom: 16px; }
+      .nav-links .opt { display: none; }
+      .skills { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+      .project-facts div { grid-template-columns: minmax(0, 1fr); gap: 0; }
+      .hack-list li { grid-template-columns: minmax(0, 1fr); gap: 2px; }
       .footer-inner { flex-direction: column; align-items: flex-start; }
       .footer-contact { text-align: left; }
     }
-
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; transition-delay: 0s !important; }
     }
   </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Ezechukwu Miracle",
+    "alternateName": "Mi-Tech",
+    "url": "https://mi-tech.pages.dev/",
+    "image": "https://mi-tech.pages.dev/assets/photos/portrait.webp",
+    "jobTitle": "Mobile engineer (Flutter)",
+    "email": "mailto:ezechukwumiracle52@gmail.com",
+    "address": { "@type": "PostalAddress", "addressLocality": "Lagos", "addressCountry": "NG" },
+    "knowsAbout": ["Flutter", "Dart", "Mobile app development", "FastAPI", "Supabase", "Firebase", "Serverpod", "AI agents", "Voice AI"],
+    "sameAs": [
+      "https://github.com/MI-TECHDLIN",
+      "https://www.instagram.com/mi_techydlin",
+      "https://www.youtube.com/@mi_techydlin",
+      "https://facebook.com/share/1JdosmJjdU/"
+    ]
+  }
+  </script>
 </head>
 <body>
 
-<div id="preloader"><span class="pre-logo">a moving man..</span></div>
-<div id="prog"></div>
-<div id="cur-dot"></div>
-<div id="cur-ring"></div>
+<a class="skip-link" href="#main">Skip to content</a>
 
-<!-- Nav -->
-<nav>
-  <div class="nav-logo">Mi-Tech</div>
-  <button class="dark-btn" id="darkBtn">☾</button>
-</nav>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-github" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></g></symbol>
+  <symbol id="i-instagram" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></g></symbol>
+  <symbol id="i-facebook" viewBox="0 0 24 24"><path fill="currentColor" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></symbol>
+  <symbol id="i-youtube" viewBox="0 0 24 24"><path fill="currentColor" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5V4M12 20v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M1.5 12H4M20 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></g></symbol>
+  <symbol id="i-expand" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-prev" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></symbol>
+</svg>
 
-<!-- ═══════════════════════════════════════════════════════════
-     HERO SECTION
-═══════════════════════════════════════════════════════════ -->
-<section id="hero">
-  <h1 class="hero-name">Hi, I'm<br>Ezechukwu<br>Miracle.</h1>
-  <p class="hero-sub">Nice to meet you.</p>
+<div id="preloader" aria-hidden="true"><span class="pre-logo">a moving man..</span></div>
+<div id="prog" aria-hidden="true"></div>
+<div class="cursor" id="cur-dot" aria-hidden="true"><span></span></div>
+<div class="cursor" id="cur-ring" aria-hidden="true"><span></span></div>
 
-  <div class="socials">
+<header class="site-header">
+  <nav class="nav" aria-label="Main">
+    <a class="nav-logo" href="#main">Mi-Tech</a>
+    <ul class="nav-links">
+      <li><a href="#work">Projects</a></li>
+      <li class="opt"><a href="#about">About</a></li>
+      <li class="opt"><a href="#community">Community</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Dark theme" aria-pressed="false">
+      <svg class="i-moon" aria-hidden="true"><use href="#i-moon"/></svg>
+      <svg class="i-sun" aria-hidden="true"><use href="#i-sun"/></svg>
+    </button>
+  </nav>
+</header>
 
-    <!-- ════ SOCIAL LINKS — swap each href ════
-         GitHub    : already set ✅
-         Email     : already set ✅
-         Instagram : href="https://instagram.com/YOUR_HANDLE"
-         Facebook  : href="https://facebook.com/YOUR_PROFILE"
-         Discord   : href="https://discord.gg/YOUR_SERVER"  or  https://discord.com/users/YOUR_ID
-         YouTube   : href="https://youtube.com/@YOUR_CHANNEL"
-    ════ -->
+<main id="main" tabindex="-1">
 
-    <a class="si" href="https://github.com/MI-TECHDLIN" target="_blank" title="GitHub">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-    </a>
-    <a class="si" href="mailto:ezechukwumiracle52@gmail.com" target="_blank" title="Email">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-    </a>
-    <a class="si" href="https://www.instagram.com/mi_techydlin" target="_blank" title="Instagram"><!-- ← paste Instagram URL -->
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-    </a>
-    <a class="si" href="https://facebook.com/share/1JdosmJjdU/" target="_blank" title="Facebook"><!-- ← paste Facebook URL -->
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-    </a>
-    <a class="si" href="https://www.youtube.com/@mi_techydlin" target="_blank" title="YouTube"><!-- ← paste YouTube URL -->
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-    </a>
-  </div>
-
-  <!-- ════ PHOTO LAYOUT 1: HERO CORNER-BRACKET PORTRAIT ════
-       Put your photo file in the same folder as index.html,
-       then replace  hero-photo.jpg  below with your filename.
-       Tip: portrait crop works best (3:4 ratio).
-  ════ -->
-  <div class="hero-photo-wrap" id="heroPhoto">
-    <div class="hero-photo-inner">
-      <img src="hero.jpg" alt="Ezechukwu Miracle">
-    </div>
-    <span class="corner corner-tl"></span>
-    <span class="corner corner-tr"></span>
-    <span class="corner corner-bl"></span>
-    <span class="corner corner-br"></span>
-  </div>
-
-  <div class="scroll-wrap">
-    <svg class="scroll-svg" viewBox="0 0 108 108">
-      <defs><path id="cp" d="M54,54 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs>
-      <text><textPath href="#cp">· scroll down · scroll down ·&nbsp;</textPath></text>
-    </svg>
-    <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════
-     ABOUT + SKILLS
-═══════════════════════════════════════════════════════════ -->
-<div class="wrap">
-  <section class="section" id="about">
-    <div class="about-inner">
-
-      <!-- ════ PHOTO LAYOUT 2: ABOUT DOUBLE-RING CIRCLE ════
-           Put your photo file in the same folder, then replace
-           about-photo.jpg  below with your filename.
-           Square or portrait crops work best.
-      ════ -->
-      <div class="about-photo-wrap" id="aboutPhoto">
-        <div class="about-photo-inner">
-          <img src="about-photo.png" alt="Ezechukwu Miracle">
-          <!-- Remove the img tag and put back this span if no photo yet:
-          <span style="line-height:1.6">📸<br>Your photo</span>
-          -->
-        </div>
+  <!-- ═══════════════════ HERO ═══════════════════ -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-text">
+      <h1 class="hero-name" id="hero-title">
+        <span class="sr-only">Hi, I'm Ezechukwu Miracle.</span>
+        <span aria-hidden="true">
+          <span class="line"><span class="word">Hi,</span> <span class="word">I’m</span></span>
+          <span class="line"><span class="word">Ezechukwu</span></span>
+          <span class="line"><span class="word">Miracle.</span></span>
+        </span>
+      </h1>
+      <script>
+        /* Split the name into letters right away so the entrance never flashes. */
+        (function () {
+          if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          var i = 0;
+          document.querySelectorAll('.hero-name .word').forEach(function (word) {
+            var text = word.textContent;
+            word.textContent = '';
+            Array.from(text).forEach(function (ch) {
+              var s = document.createElement('span');
+              s.className = 'char';
+              s.style.setProperty('--i', i++);
+              s.textContent = ch;
+              word.appendChild(s);
+            });
+          });
+          document.documentElement.classList.add('split');
+        })();
+      </script>
+      <p class="hero-sub" style="--d:.25s"><span id="heroSub" aria-hidden="true">Nice to meet you.</span><span class="sr-only">Nice to meet you.</span></p>
+      <p class="hero-lede" style="--d:.35s">I build cross-platform apps with Flutter, plus the AI and backend pieces behind them. This year that meant a voice co-rider for delivery riders, a calmer home for saved posts, and apps for mothers, students and savings circles.</p>
+      <ul class="hero-facts" style="--d:.45s" aria-label="Highlights">
+        <li><strong>6</strong> hackathon builds in 2026</li>
+        <li><strong>5</strong> Android apps with public downloads</li>
+        <li>Lead Mobile Engineer at <strong>Hustle</strong></li>
+      </ul>
+      <div class="hero-cta" style="--d:.55s">
+        <a class="btn" href="#work">See my projects <span aria-hidden="true">↓</span></a>
+        <a class="btn btn-ghost" href="ezechukwu_miracle_cv.docx" download>My Resume <span aria-hidden="true">↗</span><span class="sr-only">(Word document)</span></a>
       </div>
-
-      <div id="aboutText">
-        <p class="about-label">About Me.</p>
-        <div class="about-bio">
-          <p>I'm a Pragmatic engineer.</p>
-          <p>I build Cross Platform Apps, i channel ideas,thoughts to a technical execution, driven by a craving to ship things that matter.</p>
-        </div>
-        <a class="btn" href="ezechukwu_miracle_cv.docx" download>My Resume ↗</a>
-      </div>
+      <ul class="socials" style="--d:.65s" aria-label="Find me online">
+        <li><a class="si" href="https://github.com/MI-TECHDLIN" target="_blank" rel="me noopener" aria-label="GitHub"><svg aria-hidden="true"><use href="#i-github"/></svg></a></li>
+        <li><a class="si" href="mailto:ezechukwumiracle52@gmail.com" aria-label="Email"><svg aria-hidden="true"><use href="#i-mail"/></svg></a></li>
+        <li><a class="si" href="https://www.instagram.com/mi_techydlin" target="_blank" rel="me noopener" aria-label="Instagram"><svg aria-hidden="true"><use href="#i-instagram"/></svg></a></li>
+        <li><a class="si" href="https://facebook.com/share/1JdosmJjdU/" target="_blank" rel="me noopener" aria-label="Facebook"><svg aria-hidden="true"><use href="#i-facebook"/></svg></a></li>
+        <li><a class="si" href="https://www.youtube.com/@mi_techydlin" target="_blank" rel="me noopener" aria-label="YouTube"><svg aria-hidden="true"><use href="#i-youtube"/></svg></a></li>
+      </ul>
     </div>
 
-    <div class="skills-grid" id="skillsGrid">
-      <span class="skill-tag">Flutter</span>
-      <span class="skill-tag">Dart</span>
-      <span class="skill-tag">GetX</span>
-      <span class="skill-tag">Provider</span>
-      <span class="skill-tag">Firebase</span>
-      <span class="skill-tag">FastAPI</span>
-      <span class="skill-tag">Python</span>
-      <span class="skill-tag">Node.js</span>
-      <span class="skill-tag">React</span>
-      <span class="skill-tag">Kotlin</span>
-      <span class="skill-tag">Squad API</span>
-      <span class="skill-tag">REST APIs</span>
-      <span class="skill-tag">Android</span>
-      <span class="skill-tag">Material 3</span>
+    <figure class="hero-photo" style="--d:.3s">
+      <div class="hero-photo-inner">
+        <img src="assets/photos/speaking-600.webp" srcset="assets/photos/speaking-600.webp 600w, assets/photos/speaking.webp 1000w" sizes="(max-width: 860px) 128px, 290px" width="600" height="720" fetchpriority="high" alt="Ezechukwu speaking into a microphone while presenting at a tech event">
+      </div>
+      <span class="corner corner-tl" aria-hidden="true"></span>
+      <span class="corner corner-tr" aria-hidden="true"></span>
+      <span class="corner corner-bl" aria-hidden="true"></span>
+      <span class="corner corner-br" aria-hidden="true"></span>
+    </figure>
+
+    <a class="scroll-wrap" href="#work" style="--d:.8s" aria-label="Scroll to projects">
+      <svg class="scroll-svg" viewBox="0 0 108 108" aria-hidden="true">
+        <defs><path id="cp" d="M54,54 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs>
+        <text><textPath href="#cp">· scroll down · scroll down ·&nbsp;</textPath></text>
+      </svg>
+      <span class="scroll-mouse" aria-hidden="true"><span class="scroll-wheel"></span></span>
+    </a>
+  </section>
+
+  <!-- ═══════════════════ PROJECTS ═══════════════════ -->
+  <section class="section" id="work" aria-labelledby="work-title">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2 class="section-title" id="work-title">Projects</h2>
+        <p class="section-lede">What I've been building in 2026. Each card says what the app is for, what I did on it and where to try it. Tap the screens to see more of them.</p>
+      </div>
+
+      <div class="projects">
+
+        <!-- /01 Pinne -->
+        <article class="project project--wide reveal" id="pinne" aria-labelledby="pinne-title" style="--accent:#7c5cff">
+          <a class="project-media" href="assets/projects/pinne/banner.webp" data-gallery aria-label="Open Pinne screenshots (7)">
+            <span class="phones">
+              <img src="assets/projects/pinne/back-600.webp" width="287" height="600" alt="" loading="lazy" decoding="async">
+              <img src="assets/projects/pinne/home-600.webp" width="287" height="600" alt="" loading="lazy" decoding="async">
+              <img src="assets/projects/pinne/progress-600.webp" width="270" height="600" alt="" loading="lazy" decoding="async">
+            </span>
+            <span class="media-hint" aria-hidden="true"><svg><use href="#i-expand"/></svg>7 screens</span>
+          </a>
+          <ul class="gallery-src" hidden>
+            <li><a href="assets/projects/pinne/banner.webp" data-thumb="assets/projects/pinne/banner-640.webp" data-w="1280" data-h="640">Pinne: save it, come back to it. The Ribbon Spirit beside three app screens.</a></li>
+            <li><a href="assets/projects/pinne/home.webp" data-thumb="assets/projects/pinne/home-600.webp" data-w="430" data-h="900">Onboarding: links, posts, articles and notes land in one home, with the reason you kept them.</a></li>
+            <li><a href="assets/projects/pinne/back.webp" data-thumb="assets/projects/pinne/back-600.webp" data-w="430" data-h="900">Onboarding: saves come back when they are useful, with your original note beside them.</a></li>
+            <li><a href="assets/projects/pinne/done.webp" data-thumb="assets/projects/pinne/done-600.webp" data-w="430" data-h="900">Onboarding: plan a small review window and watch the ideas you revisit add up.</a></li>
+            <li><a href="assets/projects/pinne/saved.webp" data-thumb="assets/projects/pinne/saved-600.webp" data-w="554" data-h="1200">Saving a link: it is kept on the phone first, then synced when you sign in.</a></li>
+            <li><a href="assets/projects/pinne/search.webp" data-thumb="assets/projects/pinne/search-600.webp" data-w="412" data-h="915">Search: describe it the way you remember it, and see why each result matched.</a></li>
+            <li><a href="assets/projects/pinne/progress.webp" data-thumb="assets/projects/pinne/progress-600.webp" data-w="412" data-h="915">Honest progress: what you saved this week and what you actually came back to.</a></li>
+          </ul>
+          <div class="project-body">
+            <p class="project-meta"><span class="num">/01</span><span>Oct 2026</span><span>Solo build</span><span class="badge">Latest</span></p>
+            <h3 class="project-name" id="pinne-title">Pinne</h3>
+            <p class="project-intent">Saved posts turn into a graveyard. Pinne gives everything you save one calm home, keeps the reason you saved it, and brings it back when it would actually help.</p>
+            <ul class="project-points">
+              <li>Share from any app, even offline. A save is on the phone before it says “Saved”.</li>
+              <li>AI suggests a collection, tags and a summary. You accept or dismiss them.</li>
+              <li>Progress only counts real reviews, never just opening a link.</li>
+            </ul>
+            <dl class="project-facts">
+              <div><dt>Role</dt><dd>Everything: product, Flutter app and Serverpod backend</dd></div>
+              <div><dt>Built for</dt><dd>Serverpod’s “Build Something Real” hackathon</dd></div>
+              <div><dt>Status</dt><dd>Hackathon entry, now being built toward a public release</dd></div>
+            </dl>
+            <ul class="tags" aria-label="Tech stack">
+              <li>Flutter</li><li>Riverpod</li><li>Serverpod 4</li><li>PostgreSQL</li><li>SQLite (offline outbox)</li><li>Groq</li>
+            </ul>
+            <p class="project-links">
+              <a class="link-btn primary" href="https://github.com/MI-TECHDLIN/pinne" target="_blank" rel="noopener">Code on GitHub</a>
+            </p>
+          </div>
+        </article>
+
+        <!-- /02 Kora -->
+        <article class="project project--wide flip reveal" id="kora" aria-labelledby="kora-title" style="--accent:#8b5cf6">
+          <a class="project-media" href="assets/projects/kora/banner.webp" data-gallery aria-label="Open Kora screenshots (6)">
+            <span class="phones">
+              <img src="assets/projects/kora/offer-600.webp" width="283" height="600" alt="" loading="lazy" decoding="async">
+              <img src="assets/projects/kora/voice-600.webp" width="281" height="600" alt="" loading="lazy" decoding="async">
+              <img src="assets/projects/kora/map-600.webp" width="281" height="600" alt="" loading="lazy" decoding="async">
+            </span>
+            <span class="media-hint" aria-hidden="true"><svg><use href="#i-expand"/></svg>6 screens</span>
+          </a>
+          <ul class="gallery-src" hidden>
+            <li><a href="assets/projects/kora/banner.webp" data-thumb="assets/projects/kora/banner-600.webp" data-w="1200" data-h="630">Kora: talk to your operations, let your operations talk back. A voice-first co-rider for last-mile drivers.</a></li>
+            <li><a href="assets/projects/kora/voice.webp" data-thumb="assets/projects/kora/voice-600.webp" data-w="562" data-h="1200">Voice screen: the co-rider orb, ready when you are. Lime always means the mic is live.</a></li>
+            <li><a href="assets/projects/kora/offer.webp" data-thumb="assets/projects/kora/offer-600.webp" data-w="567" data-h="1200">A new delivery offer with a countdown, while the co-rider accepts it and checks the route.</a></li>
+            <li><a href="assets/projects/kora/map.webp" data-thumb="assets/projects/kora/map-600.webp" data-w="562" data-h="1200">In-app map: navigation to the next stop without leaving Kora.</a></li>
+            <li><a href="assets/projects/kora/summary.webp" data-thumb="assets/projects/kora/summary-600.webp" data-w="562" data-h="1200">Shift summary: deliveries completed, daily target and the order queue.</a></li>
+            <li><a href="assets/projects/kora/settings.webp" data-thumb="assets/projects/kora/settings-600.webp" data-w="627" data-h="1200">Settings: auto-accept rules and the hands-free “Kora” wake word.</a></li>
+          </ul>
+          <div class="project-body">
+            <p class="project-meta"><span class="num">/02</span><span>Sep 2026</span><span>Team of three</span></p>
+            <h3 class="project-name" id="kora-title">Kora</h3>
+            <p class="project-intent">A voice agentic co-rider for logistics riders. Riders talk instead of tapping, and Kora handles the next stop, the route and new order offers, then answers out loud so their eyes stay on the road.</p>
+            <ul class="project-points">
+              <li>Say “Hey Kora”. The wake word runs offline, on the phone.</li>
+              <li>Routes draw on an in-app map, so riders never get bounced to another app.</li>
+              <li>After a shift, it sums up the day: deliveries, targets and what went wrong.</li>
+            </ul>
+            <dl class="project-facts">
+              <div><dt>Role</dt><dd>Mobile developer: the Flutter rider app</dd></div>
+              <div><dt>Built for</dt><dd>AssemblyAI Voice Agent Hackathon on lablab.ai</dd></div>
+              <div><dt>Status</dt><dd>Working prototype with an Android release (v1.0.0)</dd></div>
+            </dl>
+            <ul class="tags" aria-label="Tech stack">
+              <li>Flutter</li><li>FastAPI</li><li>AssemblyAI Voice Agent</li><li>Supabase</li><li>MapLibre</li><li>sherpa-onnx</li><li>Rive</li>
+            </ul>
+            <p class="project-links">
+              <a class="link-btn primary" href="https://github.com/MI-TECHDLIN/kora" target="_blank" rel="noopener">Code on GitHub</a>
+              <a class="link-btn" href="https://github.com/MI-TECHDLIN/kora/releases/latest" target="_blank" rel="noopener">Download APK</a>
+              <a class="link-btn" href="https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon" target="_blank" rel="noopener">Hackathon</a>
+            </p>
+          </div>
+        </article>
+
+        <!-- /03 Ajo -->
+        <article class="project reveal" id="ajo" aria-labelledby="ajo-title" style="--accent:#1f9d55">
+          <a class="project-media" href="assets/projects/ajo/home.webp" data-gallery aria-label="Open Ajo screenshots (5)">
+            <span class="phones">
+              <img src="assets/projects/ajo/welcome-600.webp" width="278" height="600" alt="" loading="lazy" decoding="async">
+              <img src="assets/projects/ajo/home-600.webp" width="350" height="600" alt="" loading="lazy" decoding="async">
+              <img src="assets/projects/ajo/my-turn-600.webp" width="339" height="600" alt="" loading="lazy" decoding="async">
+            </span>
+            <span class="media-hint" aria-hidden="true"><svg><use href="#i-expand"/></svg>5 screens</span>
+          </a>
+          <ul class="gallery-src" hidden>
+            <li><a href="assets/projects/ajo/welcome.webp" data-thumb="assets/projects/ajo/welcome-600.webp" data-w="555" data-h="1200">Welcome: save together and know where everyone stands, in one honest ledger.</a></li>
+            <li><a href="assets/projects/ajo/home.webp" data-thumb="assets/projects/ajo/home-600.webp" data-w="699" data-h="1200">Home: total saved in circles, the next payment and the round your payout comes.</a></li>
+            <li><a href="assets/projects/ajo/circle.webp" data-thumb="assets/projects/ajo/circle-600.webp" data-w="678" data-h="1200">Circle ledger: who has paid this round and whose contribution is overdue.</a></li>
+            <li><a href="assets/projects/ajo/my-turn.webp" data-thumb="assets/projects/ajo/my-turn-600.webp" data-w="678" data-h="1200">My Turn: the payout journey, and why it is on hold until the pot is full.</a></li>
+            <li><a href="assets/projects/ajo/ajo-ai.webp" data-thumb="assets/projects/ajo/ajo-ai-600.webp" data-w="555" data-h="1200">Ajo AI reads the circle’s ledger and explains it in English or Pidgin. It can’t move money.</a></li>
+          </ul>
+          <div class="project-body">
+            <p class="project-meta"><span class="num">/03</span><span>Oct 2026</span><span>Team project</span></p>
+            <h3 class="project-name" id="ajo-title">Ajo</h3>
+            <p class="project-intent">Ajo (esusu) savings circles run on trust and memory. This app gives the whole circle one honest ledger: who has paid, whose turn it is, and why a payout is on hold. Ajo AI explains it in English or Pidgin.</p>
+            <dl class="project-facts">
+              <div><dt>Role</dt><dd>Flutter mobile front end</dd></div>
+              <div><dt>Built for</dt><dd>TINC26 × BMONI hackathon</dd></div>
+              <div><dt>Status</dt><dd>Hackathon demo on a simulated ledger, no real money</dd></div>
+            </dl>
+            <ul class="tags" aria-label="Tech stack">
+              <li>Flutter</li><li>Riverpod</li><li>go_router</li><li>Firebase Auth</li><li>Dio</li>
+            </ul>
+            <p class="project-links">
+              <a class="link-btn primary" href="https://github.com/olowolayemogoodness-crypto/ajo-hackathon-bmoni" target="_blank" rel="noopener">Code on GitHub</a>
+            </p>
+          </div>
+        </article>
+
+        <!-- /04 OneAquaHealth -->
+        <article class="project reveal" id="oneaquahealth" aria-labelledby="oah-title" style="--accent:#0f7c86">
+          <a class="project-media" href="assets/projects/oneaquahealth/map.webp" data-gallery aria-label="Open OneAquaHealth screenshots (6)">
+            <span class="phones">
+              <img src="assets/projects/oneaquahealth/onboarding-600.webp" width="281" height="600" alt="" loading="lazy" decoding="async">
+              <img src="assets/projects/oneaquahealth/map-600.webp" width="281" height="600" alt="" loading="lazy" decoding="async">
+              <img src="assets/projects/oneaquahealth/question-600.webp" width="281" height="600" alt="" loading="lazy" decoding="async">
+            </span>
+            <span class="media-hint" aria-hidden="true"><svg><use href="#i-expand"/></svg>6 screens</span>
+          </a>
+          <ul class="gallery-src" hidden>
+            <li><a href="assets/projects/oneaquahealth/onboarding.webp" data-thumb="assets/projects/oneaquahealth/onboarding-600.webp" data-w="561" data-h="1200">Onboarding: your stream is part of city health, with a Listen button that reads it aloud.</a></li>
+            <li><a href="assets/projects/oneaquahealth/map.webp" data-thumb="assets/projects/oneaquahealth/map-600.webp" data-w="561" data-h="1200">Explore streams: a water-first map of nearby sites, with filters for sites that need data.</a></li>
+            <li><a href="assets/projects/oneaquahealth/question.webp" data-thumb="assets/projects/oneaquahealth/question-600.webp" data-w="561" data-h="1200">One question at a time, with pictures, a Listen button and an “I’m not sure” option.</a></li>
+            <li><a href="assets/projects/oneaquahealth/evidence.webp" data-thumb="assets/projects/oneaquahealth/evidence-600.webp" data-w="561" data-h="1200">Photo evidence: optional upstream and downstream views of the stream.</a></li>
+            <li><a href="assets/projects/oneaquahealth/impact.webp" data-thumb="assets/projects/oneaquahealth/impact-600.webp" data-w="561" data-h="1200">Your impact: checks submitted, streams covered and a history of past checks.</a></li>
+            <li><a href="assets/projects/oneaquahealth/profile.webp" data-thumb="assets/projects/oneaquahealth/profile-600.webp" data-w="561" data-h="1200">Profile: a fictional demo account with its season totals.</a></li>
+          </ul>
+          <div class="project-body">
+            <p class="project-meta"><span class="num">/04</span><span>Oct 2026</span><span>Design + build</span></p>
+            <h3 class="project-name" id="oah-title">OneAquaHealth</h3>
+            <p class="project-intent">Urban streams need more eyes on them. I redesigned the OneAquaHealth citizen-science app so anyone can check a stream, one plain-language question at a time, and send researchers evidence they can use.</p>
+            <dl class="project-facts">
+              <div><dt>Role</dt><dd>Product design and Flutter implementation</dd></div>
+              <div><dt>Built for</dt><dd>IEEE OneAquaHealth Hackathon, Citizen Science UX track</dd></div>
+              <div><dt>Status</dt><dd>Android release (v1.0.1) with a demo mode that needs no sign-in</dd></div>
+            </dl>
+            <ul class="tags" aria-label="Tech stack">
+              <li>Flutter</li><li>MapLibre</li><li>OpenFreeMap</li><li>Offline drafts</li><li>18 languages</li><li>Read aloud</li>
+            </ul>
+            <p class="project-links">
+              <a class="link-btn primary" href="https://github.com/MI-TECHDLIN/onehealth-ui" target="_blank" rel="noopener">Code on GitHub</a>
+              <a class="link-btn" href="https://github.com/MI-TECHDLIN/onehealth-ui/releases/latest" target="_blank" rel="noopener">Download APK</a>
+            </p>
+          </div>
+        </article>
+
+        <!-- /05 EasyBirth -->
+        <article class="project reveal" id="easybirth" aria-labelledby="easybirth-title" style="--accent:#2f8f5b">
+          <a class="project-media" href="assets/projects/easybirth/triage.webp" data-gallery aria-label="Open EasyBirth screenshots (4)">
+            <span class="phones">
+              <img src="assets/projects/easybirth/onboarding-600.webp" width="278" height="600" alt="" loading="lazy" decoding="async">
+              <img src="assets/projects/easybirth/triage-600.webp" width="282" height="600" alt="" loading="lazy" decoding="async">
+              <img src="assets/projects/easybirth/listening-600.webp" width="212" height="600" alt="" loading="lazy" decoding="async">
+            </span>
+            <span class="media-hint" aria-hidden="true"><svg><use href="#i-expand"/></svg>4 screens</span>
+          </a>
+          <ul class="gallery-src" hidden>
+            <li><a href="assets/projects/easybirth/onboarding.webp" data-thumb="assets/projects/easybirth/onboarding-600.webp" data-w="555" data-h="1200">Onboarding: speak in your language. Ask about your pregnancy in Hausa, Yoruba, Igbo or Pidgin.</a></li>
+            <li><a href="assets/projects/easybirth/home.webp" data-thumb="assets/projects/easybirth/home-600.webp" data-w="425" data-h="1200">Home: pregnancy progress in weeks, and one tap to speak your symptoms.</a></li>
+            <li><a href="assets/projects/easybirth/listening.webp" data-thumb="assets/projects/easybirth/listening-600.webp" data-w="425" data-h="1200">Listening: symptoms spoken in Hausa, transcribed as you talk.</a></li>
+            <li><a href="assets/projects/easybirth/triage.webp" data-thumb="assets/projects/easybirth/triage-600.webp" data-w="564" data-h="1200">Result: high risk, go to your health centre now, with buttons to find one or call a health worker.</a></li>
+          </ul>
+          <div class="project-body">
+            <p class="project-meta"><span class="num">/05</span><span>Jul 2026</span><span>Team project</span></p>
+            <h3 class="project-name" id="easybirth-title">EasyBirth</h3>
+            <p class="project-intent">Every mother deserves to know when to ask for help. EasyBirth lets pregnant women describe symptoms by voice in Hausa, Yoruba, Igbo or Pidgin, then shows how urgent it is and where to go for care.</p>
+            <dl class="project-facts">
+              <div><dt>Role</dt><dd>Flutter front end; teammates built the ML triage backend</dd></div>
+              <div><dt>Built for</dt><dd>COUCH 2026 hackathon, Healthcare track</dd></div>
+              <div><dt>Status</dt><dd>Hackathon build</dd></div>
+            </dl>
+            <ul class="tags" aria-label="Tech stack">
+              <li>Flutter</li><li>Hive</li><li>Supabase</li><li>FastAPI</li><li>Python ML</li>
+            </ul>
+            <p class="project-links">
+              <a class="link-btn primary" href="https://github.com/MI-TECHDLIN/easybirth" target="_blank" rel="noopener">Code on GitHub</a>
+            </p>
+          </div>
+        </article>
+
+        <!-- /06 Konet -->
+        <article class="project reveal" id="konet" aria-labelledby="konet-title" style="--accent:#4f46e5">
+          <a class="project-media project-media--cover" href="assets/projects/konet/banner.webp" data-gallery aria-label="Open the Konet banner">
+            <span class="phones">
+              <img src="assets/projects/konet/banner-800.webp" srcset="assets/projects/konet/banner-800.webp 800w, assets/projects/konet/banner.webp 1600w" sizes="(max-width: 760px) 100vw, 520px" width="800" height="450" alt="" loading="lazy" decoding="async">
+            </span>
+            <span class="media-hint" aria-hidden="true"><svg><use href="#i-expand"/></svg>View</span>
+          </a>
+          <ul class="gallery-src" hidden>
+            <li><a href="assets/projects/konet/banner.webp" data-thumb="assets/projects/konet/banner-800.webp" data-w="1600" data-h="900">Konet: a quiet place to talk to the people you love. The chat list beside the sign-up screen.</a></li>
+          </ul>
+          <div class="project-body">
+            <p class="project-meta"><span class="num">/06</span><span>Jul 2026</span><span>Solo build</span></p>
+            <h3 class="project-name" id="konet-title">Konet</h3>
+            <p class="project-intent">A quiet place to talk to the people you love. Instead of swapping phone numbers, you share a personal code, and friends add it to start chatting. Pin the chats that matter and search the rest.</p>
+            <dl class="project-facts">
+              <div><dt>Role</dt><dd>Solo: Flutter app and Firebase setup</dd></div>
+              <div><dt>Status</dt><dd>MVP with an Android release (v1.0.1) and a demo video</dd></div>
+            </dl>
+            <ul class="tags" aria-label="Tech stack">
+              <li>Flutter</li><li>Firebase Auth</li><li>Cloud Firestore</li><li>Cloud Messaging</li>
+            </ul>
+            <p class="project-links">
+              <a class="link-btn primary" href="https://github.com/MI-TECHDLIN/konet" target="_blank" rel="noopener">Code on GitHub</a>
+              <a class="link-btn" href="https://github.com/MI-TECHDLIN/konet/releases/latest" target="_blank" rel="noopener">Download APK</a>
+              <a class="link-btn" href="https://youtu.be/Sqxjfwoh0Us" target="_blank" rel="noopener">Watch demo</a>
+            </p>
+          </div>
+        </article>
+
+        <!-- /07 Drim AI -->
+        <article class="project reveal" id="drim-ai" aria-labelledby="drim-title" style="--accent:#e9a178">
+          <a class="project-media" href="assets/projects/drim-ai/quiz.webp" data-gallery aria-label="Open Drim AI screenshots (4)">
+            <span class="phones">
+              <img src="assets/projects/drim-ai/onboarding-600.webp" width="278" height="600" alt="" loading="lazy" decoding="async">
+              <img src="assets/projects/drim-ai/quiz-600.webp" width="278" height="600" alt="" loading="lazy" decoding="async">
+              <img src="assets/projects/drim-ai/confidence-600.webp" width="278" height="600" alt="" loading="lazy" decoding="async">
+            </span>
+            <span class="media-hint" aria-hidden="true"><svg><use href="#i-expand"/></svg>4 screens</span>
+          </a>
+          <ul class="gallery-src" hidden>
+            <li><a href="assets/projects/drim-ai/onboarding.webp" data-thumb="assets/projects/drim-ai/onboarding-600.webp" data-w="555" data-h="1200">Onboarding: 1% of students reach their intended career path. Drim AI is built for the other 99%.</a></li>
+            <li><a href="assets/projects/drim-ai/quiz.webp" data-thumb="assets/projects/drim-ai/quiz-600.webp" data-w="555" data-h="1200">Self-discovery quiz: question 1 of 8, about what makes you lose track of time.</a></li>
+            <li><a href="assets/projects/drim-ai/confidence.webp" data-thumb="assets/projects/drim-ai/confidence-600.webp" data-w="555" data-h="1200">Confidence check: “You grew. 4 → 8.” Confidence is measured before and after.</a></li>
+            <li><a href="assets/projects/drim-ai/momentum.webp" data-thumb="assets/projects/drim-ai/momentum-600.webp" data-w="555" data-h="1200">Activity: a momentum map of the last 12 weeks, with the current streak.</a></li>
+          </ul>
+          <div class="project-body">
+            <p class="project-meta"><span class="num">/07</span><span>Jun 2026</span><span>Solo build</span></p>
+            <h3 class="project-name" id="drim-title">Drim AI</h3>
+            <p class="project-intent">Most students never get a career counsellor. Drim AI walks them through a five-minute self-discovery journey and turns it into career matches, each with a step-by-step roadmap, then shows how much their confidence grew.</p>
+            <dl class="project-facts">
+              <div><dt>Role</dt><dd>Solo, built in 4–6 days</dd></div>
+              <div><dt>Built for</dt><dd>YouthCode Foundation × AI Hackathon 2026, Track 04</dd></div>
+              <div><dt>Status</dt><dd>Android release (v1.0.0); iOS built and simulator-tested</dd></div>
+            </dl>
+            <ul class="tags" aria-label="Tech stack">
+              <li>Flutter</li><li>Riverpod</li><li>Supabase</li><li>Edge Functions</li><li>Groq (Llama 3.3)</li><li>Adzuna API</li>
+            </ul>
+            <p class="project-links">
+              <a class="link-btn primary" href="https://github.com/MI-TECHDLIN/drim-ai" target="_blank" rel="noopener">Code on GitHub</a>
+              <a class="link-btn" href="https://github.com/MI-TECHDLIN/drim-ai/releases/latest" target="_blank" rel="noopener">Download APK</a>
+            </p>
+          </div>
+        </article>
+
+        <!-- /08 Flowo -->
+        <article class="project reveal" id="flowo" aria-labelledby="flowo-title" style="--accent:#a78bfa">
+          <a class="project-media" href="assets/projects/flowo/ranking.webp" data-gallery aria-label="Open Flowo screenshots (4)">
+            <span class="phones">
+              <img src="assets/projects/flowo/tasks-600.webp" width="281" height="600" alt="" loading="lazy" decoding="async">
+              <img src="assets/projects/flowo/ranking-600.webp" width="281" height="600" alt="" loading="lazy" decoding="async">
+              <img src="assets/projects/flowo/focus-600.webp" width="281" height="600" alt="" loading="lazy" decoding="async">
+            </span>
+            <span class="media-hint" aria-hidden="true"><svg><use href="#i-expand"/></svg>4 screens</span>
+          </a>
+          <ul class="gallery-src" hidden>
+            <li><a href="assets/projects/flowo/tasks.webp" data-thumb="assets/projects/flowo/tasks-600.webp" data-w="561" data-h="1200">Today’s tasks: what is done, what remains and what is overdue.</a></li>
+            <li><a href="assets/projects/flowo/new-task.webp" data-thumb="assets/projects/flowo/new-task-600.webp" data-w="561" data-h="1200">New task: a title, priority, time and how long it should take.</a></li>
+            <li><a href="assets/projects/flowo/ranking.webp" data-thumb="assets/projects/flowo/ranking-600.webp" data-w="561" data-h="1200">AI suggestions: tasks re-ranked by importance. They are only suggestions; you decide.</a></li>
+            <li><a href="assets/projects/flowo/focus.webp" data-thumb="assets/projects/flowo/focus-600.webp" data-w="561" data-h="1200">Focus timer: a session for the task you are working on.</a></li>
+          </ul>
+          <div class="project-body">
+            <p class="project-meta"><span class="num">/08</span><span>May 2026</span><span>Solo build</span></p>
+            <h3 class="project-name" id="flowo-title">Flowo</h3>
+            <p class="project-intent">Decision fatigue kills to-do lists. Flowo re-ranks your day by importance and priority, suggests what to do first and gives each task a focus session. Inspired by my old school to-do book.</p>
+            <dl class="project-facts">
+              <div><dt>Role</dt><dd>Solo: Flutter app and FastAPI backend</dd></div>
+              <div><dt>Status</dt><dd>Android release (v1.1.0) and a demo video</dd></div>
+            </dl>
+            <ul class="tags" aria-label="Tech stack">
+              <li>Flutter</li><li>Provider</li><li>Firebase</li><li>FastAPI</li><li>Groq</li><li>Render</li>
+            </ul>
+            <p class="project-links">
+              <a class="link-btn primary" href="https://github.com/MI-TECHDLIN/flowo" target="_blank" rel="noopener">Code on GitHub</a>
+              <a class="link-btn" href="https://github.com/MI-TECHDLIN/flowo/releases/latest" target="_blank" rel="noopener">Download APK</a>
+              <a class="link-btn" href="https://drive.google.com/file/d/1HyTMUxGqOqqY4nnAyaadVrEKx5q7mWnc/view?usp=sharing" target="_blank" rel="noopener">Watch demo</a>
+            </p>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- More projects: lighter list for private and in-progress work -->
+      <div class="more" aria-labelledby="more-title">
+        <div class="more-head reveal">
+          <h3 class="sub-title" id="more-title">More projects</h3>
+          <p>Team, private and in-progress work.</p>
+        </div>
+        <ul class="more-list">
+          <li class="more-item reveal">
+            <span class="num">/09</span>
+            <div>
+              <h4 class="more-name">Hustle <span class="more-role">Lead Mobile Engineer</span></h4>
+              <p class="more-desc">A hyper-local job platform for Nigeria’s informal workers: a live map of jobs nearby, a trust score built from ratings and completed jobs, and Squad escrow so pay is released when the work is done.</p>
+              <ul class="tags" aria-label="Tech stack"><li>Flutter</li><li>FastAPI</li><li>Supabase</li><li>Squad API</li></ul>
+            </div>
+            <p class="more-status"><a href="https://github.com/olowolayemogoodness-crypto/hustle" target="_blank" rel="noopener">Code on GitHub</a></p>
+          </li>
+          <li class="more-item reveal">
+            <span class="num">/10</span>
+            <div>
+              <h4 class="more-name">Trayse</h4>
+              <p class="more-desc">A campus lost-and-found: report and find lost items, and connect with campus allies who can help.</p>
+              <ul class="tags" aria-label="Tech stack"><li>Flutter</li><li>Django</li><li>Python</li><li>Squad API</li></ul>
+            </div>
+            <p class="more-status">Private repository</p>
+          </li>
+          <li class="more-item reveal">
+            <span class="num">/11</span>
+            <div>
+              <h4 class="more-name">KOstream</h4>
+              <p class="more-desc">Monitors live streams across several platforms in real time, for streamers and the people who manage them.</p>
+              <ul class="tags" aria-label="Tech stack"><li>Flutter</li><li>Dart</li><li>WebSockets</li><li>Streaming APIs</li></ul>
+            </div>
+            <p class="more-status">Private repository</p>
+          </li>
+          <li class="more-item reveal">
+            <span class="num">/12</span>
+            <div>
+              <h4 class="more-name">Curre</h4>
+              <p class="more-desc">A Flutter focus app that flips Atomic Habits: instead of making good habits obvious, it makes distractions invisible by hiding disruptive apps during the focus periods you set.</p>
+              <ul class="tags" aria-label="Tech stack"><li>Flutter</li><li>GetX</li><li>Kotlin</li><li>Android</li><li>Material 3</li></ul>
+            </div>
+            <p class="more-status">In progress</p>
+          </li>
+        </ul>
+      </div>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════════════════
-       EXPERIENCE
-  ═══════════════════════════════════════════════════════ -->
-  <section class="section" id="experience">
-    <h2 class="section-title">Experience</h2>
-    <hr class="div">
-    <div class="exp-item" id="expItem">
-     
-      <div class="exp-info">
-        <div class="exp-name">Hustle</div>
-        <div class="exp-role">Lead Mobile Engineer</div>
+  <!-- ═══════════════════ ABOUT + SKILLS ═══════════════════ -->
+  <section class="section" id="about" aria-labelledby="about-title">
+    <div class="wrap">
+      <div class="about">
+        <div class="about-photo-wrap reveal">
+          <div class="about-photo-inner">
+            <img src="assets/photos/portrait-400.webp" srcset="assets/photos/portrait-400.webp 400w, assets/photos/portrait.webp 720w" sizes="(max-width: 860px) 210px, 300px" width="400" height="400" loading="lazy" decoding="async" alt="Portrait of Ezechukwu Miracle wearing headphones around his neck">
+          </div>
+        </div>
+        <div class="reveal">
+          <h2 class="about-label" id="about-title">About me.</h2>
+          <div class="about-bio">
+            <p>I’m a pragmatic engineer.</p>
+            <p>I build cross-platform apps and turn ideas into working software, driven by a craving to ship things that matter.</p>
+            <p class="about-more">Most of my work is in Flutter, from the first screen to the store build. I’m just as happy in the backend with FastAPI, Supabase, Firebase or Serverpod, and lately I’ve been putting AI where it actually helps: voice agents, assistants that explain things in plain language, and smart suggestions people stay in control of.</p>
+          </div>
+          <a class="btn" href="ezechukwu_miracle_cv.docx" download>My Resume <span aria-hidden="true">↗</span><span class="sr-only">(Word document)</span></a>
+        </div>
       </div>
-      <div class="exp-date">2026 – Present</div>
+
+      <div class="skills reveal" aria-label="Skills">
+        <div>
+          <h3>Mobile</h3>
+          <ul class="tags"><li>Flutter</li><li>Dart</li><li>Riverpod</li><li>Provider</li><li>GetX</li><li>go_router</li><li>Kotlin</li><li>Android</li><li>Material 3</li><li>Rive</li></ul>
+        </div>
+        <div>
+          <h3>Backend &amp; data</h3>
+          <ul class="tags"><li>FastAPI</li><li>Python</li><li>Serverpod</li><li>Node.js</li><li>Supabase</li><li>Firebase</li><li>PostgreSQL</li><li>REST APIs</li><li>React</li></ul>
+        </div>
+        <div>
+          <h3>AI, voice &amp; payments</h3>
+          <ul class="tags"><li>Groq</li><li>OpenAI</li><li>AssemblyAI</li><li>sherpa-onnx</li><li>Edge Functions</li><li>MapLibre</li><li>Squad API</li></ul>
+        </div>
+      </div>
     </div>
-    <hr class="div">
   </section>
 
-  <!-- ═══════════════════════════════════════════════════════
-       WORKSweb
-  ═══════════════════════════════════════════════════════ -->
-  <section class="section" id="works">
-    <h2 class="section-title">Projects</h2>
-    <hr class="div">
-
-    <!-- /01 ─ Catalyst -->
-    <div class="proj-item">
-      <div>
-        <div class="proj-name">Curre</div>
-        <p class="proj-desc">A Flutter focus app that inverts Atomic Habits — instead of "making it obvious," it makes distractions invisible by hiding disruptive apps during user-defined focus periods.</p>
-        <div class="tags">
-          <span class="tag">Flutter</span><span class="tag">GetX</span><span class="tag">Kotlin</span><span class="tag">Android</span><span class="tag">Material 3</span>
-        </div>
-        <!-- ════ GITHUB LINK — Catalyst ════ Replace # with your repo URL -->
-        <a class="proj-gh">Ongoing↗</a>
+  <!-- ═══════════════════ EXPERIENCE ═══════════════════ -->
+  <section class="section" id="experience" aria-labelledby="exp-title">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2 class="section-title" id="exp-title">Experience</h2>
+        <p class="section-lede">Where I work, and the hackathons I built for this year.</p>
       </div>
-      <div class="proj-num">/01</div>
-    </div>
-    <hr class="div">
-
-    <!-- /02 ─ Hustle -->
-    <div class="proj-item">
-      <div>
-        <div class="proj-name">Hustle</div>
-        <p class="proj-desc">A hyper-local informal labor platform connecting Nigeria's gig workers with service seekers via GPS matching, escrow payments (Squad API), and a trust score algorithm built for pan-African scale.</p>
-        <div class="tags">
-          <span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">Squad API</span><span class="tag">GPS Matching</span><span class="tag">Node.js</span>
+      <div class="exp-item reveal">
+        <div>
+          <h3 class="exp-name">Hustle</h3>
+          <p class="exp-role">Lead Mobile Engineer</p>
         </div>
-        <!-- ════ GITHUB LINK — Hustle ════ Replace # with your repo URL -->
-        <a class="proj-gh" href="https://github.com/olowolayemogoodness-crypto/hustle" target="_blank">View on GitHub ↗</a>
+        <p class="exp-date">2026 – Present</p>
       </div>
-      <div class="proj-num">/02</div>
-    </div>
-    <hr class="div">
 
-    <!-- /03 ─ Flowo -->
-    <div class="proj-item">
-      <div>
-        <div class="proj-name">Flowo</div>
-        <p class="proj-desc">An AI-powered task productivity tool that ranks day to day tasks based on priority and importance, built with Flutter frontend and FastAPI/Groq backend. Features intelligent task suggestions, real-time Firebase storage.</p>
-        <div class="tags">
-          <span class="tag">Flutter</span><span class="tag">FastAPI</span ><span class="tag">Firebase</span><span class="tag">Groq API</span><span class="tag">Python</span>
-        </div>
-        <!-- ════ GITHUB LINK — Flowo ════ Replace # with your repo URL -->
-        <a class="proj-gh" href="https://github.com/MI-TECHDLIN/flowo" target="_blank">View on GitHub ↗</a>
+      <div class="hack reveal">
+        <h3 class="sub-title">Hackathon builds · 2026</h3>
+        <ol class="hack-list">
+          <li><span class="hack-date">Oct</span><p class="hack-row"><span class="hack-event">Serverpod “Build Something Real”<span class="hack-note">Solo</span></span><a href="#pinne">Pinne</a></p></li>
+          <li><span class="hack-date">Oct</span><p class="hack-row"><span class="hack-event">TINC26 × BMONI Hackathon<span class="hack-note">Team</span></span><a href="#ajo">Ajo</a></p></li>
+          <li><span class="hack-date">Oct</span><p class="hack-row"><span class="hack-event">IEEE OneAquaHealth Hackathon<span class="hack-note">App UI/UX, Citizen Science UX track</span></span><a href="#oneaquahealth">OneAquaHealth</a></p></li>
+          <li><span class="hack-date">Sep</span><p class="hack-row"><span class="hack-event">AssemblyAI Voice Agent Hackathon (lablab.ai)<span class="hack-note">Team of three</span></span><a href="#kora">Kora</a></p></li>
+          <li><span class="hack-date">Jul</span><p class="hack-row"><span class="hack-event">COUCH 2026<span class="hack-note">Healthcare track, team</span></span><a href="#easybirth">EasyBirth</a></p></li>
+          <li><span class="hack-date">Jun</span><p class="hack-row"><span class="hack-event">YouthCode Foundation × AI Hackathon<span class="hack-note">Track 04, solo</span></span><a href="#drim-ai">Drim AI</a></p></li>
+        </ol>
       </div>
-      <div class="proj-num">/03</div>
     </div>
-    <hr class="div">
-
-    <!-- /04 ─ Konet -->
-    <div class="proj-item">
-      <div>
-        <div class="proj-name">Konet</div>
-        <p class="proj-desc">A decentralized P2P communication app with unique link identifiers and end-to-end encryption — letting users connect privately without sharing personal contact details.</p>
-        <div class="tags">
-          <span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">P2P Networking</span><span class="tag">E2E Encryption</span>
-        </div>
-        <!-- ════ GITHUB LINK — Konet ════ Replace # with your repo URL -->
-        <a class="proj-gh" href="https://github.com/MI-TECHDLIN/konet" target="_blank">View on GitHub ↗</a>
-      </div>
-      <div class="proj-num">/04</div>
-    </div>
-    <hr class="div">
-
-    <!-- /05 ─ KOStream -->
-    <div class="proj-item">
-      <div>
-        <div class="proj-name">KOstream</div>
-        <p class="proj-desc">An app that monitors live streams across multiple platforms in real-time, helping streamers or managers.</p>
-        <div class="tags">
-          <span class="tag">Stream APIS</span><span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">WebSockets</span>
-        </div>
-        <!-- ════ GITHUB LINK — Nigerian History Quiz ════ Replace # with your repo URL -->
-        <a class="proj-gh" >Private Repository ↗</a>
-      </div>
-      <div class="proj-num">/05</div>
-    </div>
-    <hr class="div">
-
-    <!-- /05 ─ drimai -->
-    <div class="proj-item">
-      <div>
-        <div class="proj-name">Drim AI</div>
-        <p class="proj-desc">AI-powered career matching guidance app that takes students through a structured journey of self-discovery.</p>
-        <div class="tags">
-          <span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">Adazuna</span><span class="tag">TypeScript</span><span class="tag">Edge Functions</span>
-        </div>
-        <!-- ════ GITHUB LINK — drim ════ Replace # with your repo URL -->
-        <a class="proj-gh" href="https://github.com/MI-TECHDLIN/drim-ai" target="_blank">View on GitHub ↗</a>
-      </div>
-      <div class="proj-num">/06</div>
-    </div>
-    <hr class="div">
-
-    <!-- /06-easybirth -->
-    <div class="proj-item">
-      <div>
-        <div class="proj-name">Easybirth</div>
-        <p class="proj-desc">a voice-assitant app that helps pregnant women to understand their sysmptoms, konw when to act and connect with the right care.</p>
-        <div class="tags">
-          <span class="tag">Riverpod</span><span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">Gemini</span><span class="tag">HTTP</span><span class="tag">Hive</span>
-        </div>
-        <!-- ════ GITHUB LINK — drim ════ Replace # with your repo URL -->
-        <a class="proj-gh" href="https://github.com/MI-TECHDLIN/easybirth" target="_blank">View on GitHub ↗</a>
-      </div>
-      <div class="proj-num">/07</div>
-    </div>
-    <hr class="div">
-
-
-    <!-- 08-trayse -->
-    <div class="proj-item">
-      <div>
-        <div class="proj-name">Trayse</div>
-        <p class="proj-desc">A comprehensive enterprise for finding lost items in campuse environment and connecting with campus allies.</p>
-        <div class="tags">
-          <span class="tag">Flutter</span><span class="tag">Django</span><span class="tag">Dart</span><span class="tag">Squad Api</span><span class="tag">Python</span>
-        </div>
-        <!-- ════ GITHUB LINK — drim ════ Replace # with your repo URL -->
-        <a class="proj-gh">Private Repository ↗</a>
-      </div>
-      <div class="proj-num">/08</div>
-    </div>
-    <hr class="div">
-
-   
   </section>
-</div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     FOOTER
-═══════════════════════════════════════════════════════════ -->
-<footer>
+  <!-- ═══════════════════ COMMUNITY ═══════════════════ -->
+  <section class="section" id="community" aria-labelledby="community-title">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2 class="section-title" id="community-title">Community</h2>
+        <p class="section-lede">Away from the keyboard, I teach, speak at tech events and build alongside other developers at workshops.</p>
+      </div>
+      <div class="community-grid">
+        <figure class="photo-card reveal">
+          <img src="assets/photos/teaching-class-800.webp" srcset="assets/photos/teaching-class-800.webp 800w, assets/photos/teaching-class.webp 1500w" sizes="(max-width: 760px) 100vw, 600px" width="800" height="800" loading="lazy" decoding="async" alt="Ezechukwu at the front of a classroom teaching, with code projected on the screen behind him">
+          <figcaption>Teaching a PHP &amp; MySQL class</figcaption>
+        </figure>
+        <figure class="photo-card reveal">
+          <img src="assets/photos/building-at-workshop-800.webp" srcset="assets/photos/building-at-workshop-800.webp 800w, assets/photos/building-at-workshop.webp 1600w" sizes="(max-width: 760px) 50vw, 440px" width="800" height="800" loading="lazy" decoding="async" alt="Ezechukwu heads-down on his laptop among other developers at a hands-on workshop">
+          <figcaption>Building at a two-day hands-on technical workshop, Sui on Campus</figcaption>
+        </figure>
+        <figure class="photo-card reveal">
+          <img src="assets/photos/sui-on-campus-workshop-800.webp" srcset="assets/photos/sui-on-campus-workshop-800.webp 800w, assets/photos/sui-on-campus-workshop.webp 1440w" sizes="(max-width: 760px) 50vw, 440px" width="800" height="800" loading="lazy" decoding="async" alt="Ezechukwu smiling with headphones around his neck at the Sui on Campus technical workshop">
+          <figcaption>At the Sui on Campus technical workshop</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
 
-  <!-- ════ PHOTO LAYOUT 3: FOOTER BACKGROUND ════
-       Put your photo file in the same folder, then replace
-       footer-bg.jpg  below with your filename.
-       A wide landscape or full-body shot works best.
-       The photo shows very faintly (6% opacity) behind the footer.
-  ════ -->
-  <div class="footer-bg-photo">
-    <img src="footer-bg.webp" alt="">
+  <!-- ═══════════════════ CONTACT ═══════════════════ -->
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <div class="wrap reveal">
+      <h2 class="contact-title" id="contact-title">Got an idea worth shipping?</h2>
+      <p>An app idea, a hackathon team or a role in mind? Send me an email, or say hi on any of the links below.</p>
+      <a class="btn" href="mailto:ezechukwumiracle52@gmail.com">ezechukwumiracle52@gmail.com</a>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="site-footer">
+  <div class="footer-bg-photo" aria-hidden="true">
+    <img src="assets/photos/speaking-600.webp" width="600" height="720" alt="" loading="lazy" decoding="async">
   </div>
-
   <div class="footer-inner">
-    <p class="footer-copy">© 2026 Ezechukwu Miracle.</p>
-
-    <div class="socials">
-      <!-- Same links as hero — keep them in sync -->
-      <a class="si" href="https://github.com/MI-TECHDLIN" target="_blank" title="GitHub">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-      </a>
-      <a class="si" href="mailto:ezechukwumiracle52@gmail.com" target="_blank" title="Email">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-      </a>
-      <a class="si" href="https://www.instagram.com/mi_techydlin" target="_blank" title="Instagram"><!-- ← paste Instagram URL -->
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-      </a>
-      <a class="si" href="https://facebook.com/share/1JdosmJjdU/" target="_blank" title="Facebook"><!-- ← paste Facebook URL -->
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-      </a>
-      <a class="si" href="https://www.youtube.com/@mi_techydlin" target="_blank" title="YouTube"><!-- ← paste YouTube URL -->
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-      </a>
-    </div>
-
+    <p class="footer-copy">© <span id="year">2026</span> Ezechukwu Miracle.</p>
+    <ul class="socials" aria-label="Find me online">
+      <li><a class="si" href="https://github.com/MI-TECHDLIN" target="_blank" rel="me noopener" aria-label="GitHub"><svg aria-hidden="true"><use href="#i-github"/></svg></a></li>
+      <li><a class="si" href="mailto:ezechukwumiracle52@gmail.com" aria-label="Email"><svg aria-hidden="true"><use href="#i-mail"/></svg></a></li>
+      <li><a class="si" href="https://www.instagram.com/mi_techydlin" target="_blank" rel="me noopener" aria-label="Instagram"><svg aria-hidden="true"><use href="#i-instagram"/></svg></a></li>
+      <li><a class="si" href="https://facebook.com/share/1JdosmJjdU/" target="_blank" rel="me noopener" aria-label="Facebook"><svg aria-hidden="true"><use href="#i-facebook"/></svg></a></li>
+      <li><a class="si" href="https://www.youtube.com/@mi_techydlin" target="_blank" rel="me noopener" aria-label="YouTube"><svg aria-hidden="true"><use href="#i-youtube"/></svg></a></li>
+    </ul>
     <div class="footer-contact">
       <p>Lagos, Nigeria.</p>
-      <p>ezechukwumiracle52@gmail.com</p>
+      <p><a href="mailto:ezechukwumiracle52@gmail.com">ezechukwumiracle52@gmail.com</a></p>
     </div>
   </div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<!-- Screenshot viewer -->
+<dialog class="viewer" id="viewer" aria-labelledby="viewerTitle">
+  <div class="viewer-bar">
+    <p class="viewer-title" id="viewerTitle">Screens</p>
+    <p class="viewer-count" aria-live="polite"></p>
+    <button class="viewer-btn viewer-close" type="button" aria-label="Close"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+  </div>
+  <figure class="viewer-stage">
+    <img class="viewer-img" alt="">
+    <figcaption class="viewer-caption"></figcaption>
+    <button class="viewer-btn viewer-prev" type="button" aria-label="Previous screen"><svg aria-hidden="true"><use href="#i-prev"/></svg></button>
+    <button class="viewer-btn viewer-next" type="button" aria-label="Next screen"><svg aria-hidden="true"><use href="#i-next"/></svg></button>
+  </figure>
+  <div class="viewer-thumbs"></div>
+</dialog>
+
 <script>
-gsap.registerPlugin(ScrollTrigger);
+(function () {
+  var root = document.documentElement;
+  var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-/* ── Text Scramble ── */
-class TextScramble {
-  constructor(el) { this.el=el; this.chars='!<>-_\\/[]{}=+*^?#'; this.update=this.update.bind(this); }
-  setText(txt) {
-    return new Promise(res => {
-      this.queue = txt.split('').map((to,i) => ({ to, start:Math.floor(Math.random()*10), end:Math.floor(Math.random()*10)+12+i }));
-      cancelAnimationFrame(this.raf); this.frame=0; this.resolve=res; this.update();
+  /* ── Theme ── */
+  var themeBtn = document.getElementById('themeBtn');
+  var themeMeta = document.querySelector('meta[name="theme-color"]');
+  function applyTheme(theme) {
+    root.setAttribute('data-theme', theme);
+    themeBtn.setAttribute('aria-pressed', String(theme === 'dark'));
+    if (themeMeta) themeMeta.setAttribute('content', theme === 'dark' ? '#0d0d0d' : '#ffffff');
+  }
+  applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+  themeBtn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  });
+
+  var year = document.getElementById('year');
+  if (year) year.textContent = new Date().getFullYear();
+
+  /* ── Preloader cleanup ── */
+  var pre = document.getElementById('preloader');
+  if (pre && root.classList.contains('intro')) {
+    pre.addEventListener('animationend', function (e) { if (e.target === pre) pre.remove(); });
+    setTimeout(function () { if (pre.parentNode) pre.remove(); }, 2500);
+  }
+
+  /* ── Text scramble on "Nice to meet you." ── */
+  function TextScramble(el) { this.el = el; this.chars = '!<>-_\\/[]{}=+*^?#'; this.update = this.update.bind(this); }
+  TextScramble.prototype.setText = function (txt) {
+    this.queue = Array.from(txt).map(function (to, i) {
+      return { to: to, start: Math.floor(Math.random() * 10), end: Math.floor(Math.random() * 10) + 12 + i };
+    });
+    cancelAnimationFrame(this.raf); this.frame = 0; this.update();
+  };
+  TextScramble.prototype.update = function () {
+    var out = '', done = 0, self = this;
+    this.queue.forEach(function (q) {
+      if (self.frame >= q.end) { done++; out += q.to; }
+      else if (self.frame >= q.start) {
+        if (!q.c || Math.random() < 0.3) q.c = self.chars[Math.floor(Math.random() * self.chars.length)];
+        out += '<span style="opacity:.3">' + q.c + '</span>';
+      } else out += q.to;
+    });
+    this.el.innerHTML = out;
+    if (done < this.queue.length) { this.raf = requestAnimationFrame(this.update); this.frame++; }
+  };
+  var sub = document.getElementById('heroSub');
+  if (sub && !calm) {
+    var subText = sub.textContent;
+    setTimeout(function () { new TextScramble(sub).setText(subText); }, root.classList.contains('intro') ? 1700 : 900);
+  }
+
+  /* ── Header state + scroll progress ── */
+  var header = document.querySelector('.site-header');
+  var prog = document.getElementById('prog');
+  var ticking = false;
+  function onScroll() {
+    ticking = false;
+    var y = window.scrollY, max = root.scrollHeight - window.innerHeight;
+    header.classList.toggle('scrolled', y > 8);
+    prog.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, y / max) : 0) + ')';
+  }
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  onScroll();
+
+  /* ── Scroll reveal + current nav link ── */
+  if ('IntersectionObserver' in window) {
+    if (!calm) {
+      root.classList.add('reveal-ready');
+      var revealer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { entry.target.classList.add('in'); revealer.unobserve(entry.target); }
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
+      document.querySelectorAll('.reveal').forEach(function (el) { revealer.observe(el); });
+    }
+    var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach(function (a) {
+          if (a.getAttribute('href') === '#' + entry.target.id) a.setAttribute('aria-current', 'true');
+          else a.removeAttribute('aria-current');
+        });
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    navLinks.forEach(function (a) { var s = document.querySelector(a.getAttribute('href')); if (s) spy.observe(s); });
+  }
+
+  /* ── Cursor + magnetic buttons (mouse only) ── */
+  if (finePointer && !calm) {
+    root.classList.add('has-cursor');
+    var dot = document.getElementById('cur-dot'), ring = document.getElementById('cur-ring');
+    var mx = -100, my = -100, rx = -100, ry = -100;
+    document.addEventListener('mousemove', function (e) {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = 'translate(' + mx + 'px,' + my + 'px)';
+    }, { passive: true });
+    document.addEventListener('mouseover', function (e) {
+      root.classList.toggle('cursor-hover', !!e.target.closest('a, button, .skills .tags li'));
+    });
+    document.addEventListener('mouseleave', function () { root.classList.add('cursor-out'); });
+    document.addEventListener('mouseenter', function () { root.classList.remove('cursor-out'); });
+    (function track() {
+      rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
+      ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px)';
+      requestAnimationFrame(track);
+    })();
+
+    document.querySelectorAll('.si, .theme-btn').forEach(function (el) {
+      el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect();
+        el.style.transform = 'translate(' + (e.clientX - r.left - r.width / 2) * 0.35 + 'px,' + (e.clientY - r.top - r.height / 2) * 0.35 + 'px)';
+      });
+      el.addEventListener('mouseleave', function () { el.style.transform = ''; });
     });
   }
-  update() {
-    let out='', done=0;
-    this.queue.forEach(q => {
-      if (this.frame>=q.end) { done++; out+=q.to; }
-      else if (this.frame>=q.start) {
-        if (!q.c||Math.random()<0.3) q.c=this.chars[Math.floor(Math.random()*this.chars.length)];
-        out+=`<span style="opacity:.3">${q.c}</span>`;
-      } else out+=q.to;
+
+  /* ── Screenshot viewer ── */
+  var viewer = document.getElementById('viewer');
+  if (viewer && typeof viewer.showModal === 'function') {
+    var vImg = viewer.querySelector('.viewer-img');
+    var vCap = viewer.querySelector('.viewer-caption');
+    var vTitle = viewer.querySelector('.viewer-title');
+    var vCount = viewer.querySelector('.viewer-count');
+    var vThumbs = viewer.querySelector('.viewer-thumbs');
+    var items = [], index = 0, opener = null, startX = null;
+
+    function show(i) {
+      index = (i + items.length) % items.length;
+      var item = items[index];
+      vImg.src = item.src; vImg.width = item.w; vImg.height = item.h; vImg.alt = item.alt;
+      vCap.textContent = item.alt;
+      vCount.textContent = (index + 1) + ' / ' + items.length;
+      Array.prototype.forEach.call(vThumbs.children, function (b, j) { b.setAttribute('aria-current', String(j === index)); });
+      [index + 1, index - 1].forEach(function (j) { new Image().src = items[(j + items.length) % items.length].src; });
+    }
+
+    document.querySelectorAll('[data-gallery]').forEach(function (trigger) {
+      trigger.addEventListener('click', function (e) {
+        var card = trigger.closest('.project');
+        items = Array.prototype.map.call(card.querySelectorAll('.gallery-src a'), function (a) {
+          return { src: a.getAttribute('href'), thumb: a.getAttribute('data-thumb'), w: +a.getAttribute('data-w'), h: +a.getAttribute('data-h'), alt: a.textContent.trim() };
+        });
+        if (!items.length) return;
+        e.preventDefault();
+        opener = trigger;
+        vTitle.textContent = card.querySelector('.project-name').textContent;
+        vThumbs.textContent = '';
+        items.forEach(function (item, j) {
+          var b = document.createElement('button');
+          b.type = 'button'; b.className = 'viewer-thumb';
+          b.setAttribute('aria-label', 'Screen ' + (j + 1) + ' of ' + items.length);
+          var t = document.createElement('img');
+          t.src = item.thumb || item.src; t.alt = ''; t.loading = 'lazy';
+          b.appendChild(t);
+          b.addEventListener('click', function () { show(j); });
+          vThumbs.appendChild(b);
+        });
+        viewer.classList.toggle('single', items.length < 2);
+        show(0);
+        viewer.showModal();
+      });
     });
-    this.el.innerHTML=out;
-    if (done===this.queue.length) this.resolve();
-    else { this.raf=requestAnimationFrame(this.update); this.frame++; }
+
+    viewer.querySelector('.viewer-prev').addEventListener('click', function () { show(index - 1); });
+    viewer.querySelector('.viewer-next').addEventListener('click', function () { show(index + 1); });
+    viewer.querySelector('.viewer-close').addEventListener('click', function () { viewer.close(); });
+    viewer.addEventListener('keydown', function (e) {
+      if (items.length < 2) return;
+      if (e.key === 'ArrowRight') { e.preventDefault(); show(index + 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); show(index - 1); }
+    });
+    viewer.addEventListener('click', function (e) {
+      if (e.target === viewer || e.target.classList.contains('viewer-stage')) viewer.close();
+    });
+    viewer.addEventListener('pointerdown', function (e) { startX = e.pointerType === 'mouse' ? null : e.clientX; });
+    viewer.addEventListener('pointerup', function (e) {
+      if (startX === null || items.length < 2) return;
+      var dx = e.clientX - startX; startX = null;
+      if (Math.abs(dx) > 45) show(index + (dx < 0 ? 1 : -1));
+    });
+    viewer.addEventListener('close', function () {
+      vImg.removeAttribute('src');
+      if (opener) opener.focus();
+    });
   }
-}
-
-/* ── Split chars ── */
-function splitChars(el) {
-  const lines = el.innerHTML.split('<br>');
-  el.innerHTML = lines.map(line =>
-    line.split('').map(c => c.trim() ? `<span class="char">${c}</span>` : c).join('')
-  ).join('<br>');
-  return el.querySelectorAll('.char');
-}
-
-/* ── Preloader ── */
-window.addEventListener('load', () => {
-  const preLogo = document.querySelector('.pre-logo');
-  gsap.timeline({ onComplete: () => { document.getElementById('preloader').remove(); launchHero(); } })
-    .to(preLogo, { opacity:1, y:0, duration:0.5, ease:'power3.out' })
-    .to(preLogo, { opacity:0, duration:0.3, delay:0.55 })
-    .to('#preloader', { scaleY:0, transformOrigin:'top', duration:0.7, ease:'power4.inOut' });
-});
-
-function launchHero() {
-  const chars = splitChars(document.querySelector('.hero-name'));
-  const sub   = document.querySelector('.hero-sub');
-
-  gsap.timeline()
-    .from('.nav-logo',        { y:-30, opacity:0, duration:0.55, ease:'power3.out' })
-    .from('.dark-btn',        { y:-30, opacity:0, duration:0.55, ease:'power3.out' }, '<0.08')
-    .from(chars,              { y:90,  opacity:0, duration:0.65, stagger:0.016, ease:'power4.out' }, '-=0.25')
-    .from(sub,                { opacity:0, y:14, duration:0.5 }, '-=0.2')
-    .from('.si',              { scale:0, opacity:0, duration:0.45, stagger:0.07, ease:'back.out(1.6)' }, '-=0.25')
-    .from('#heroPhoto',       { opacity:0, y:20, duration:0.7, ease:'power3.out' }, '-=0.4')
-    .from('.scroll-wrap',     { opacity:0, scale:0.85, duration:0.7, ease:'back.out(1.2)' }, '-=0.5');
-
-  setTimeout(() => { new TextScramble(sub).setText('Nice to meet you.'); }, 1100);
-  setupScrollAnimations();
-  setupMagnetic();
-}
-
-/* ── Scroll animations ── */
-function setupScrollAnimations() {
-  gsap.utils.toArray('.section-title').forEach(el => {
-    gsap.from(el, { scrollTrigger:{trigger:el,start:'top 82%'}, x:-55, opacity:0, duration:0.85, ease:'power3.out' });
-  });
-  gsap.from('#aboutPhoto', { scrollTrigger:{trigger:'.about-inner',start:'top 78%'}, x:-65, opacity:0, duration:0.95, ease:'power3.out' });
-  gsap.from('#aboutText',  { scrollTrigger:{trigger:'.about-inner',start:'top 78%'}, x:65,  opacity:0, duration:0.95, ease:'power3.out', delay:0.12 });
-  gsap.from('.skill-tag',  { scrollTrigger:{trigger:'#skillsGrid',start:'top 86%'}, y:22, opacity:0, duration:0.4, stagger:{each:0.045}, ease:'power2.out' });
-  gsap.from('#expItem',    { scrollTrigger:{trigger:'#expItem',start:'top 85%'}, x:-45, opacity:0, duration:0.75, ease:'power3.out' });
-  gsap.utils.toArray('.proj-item').forEach(el => {
-    gsap.from(el, { scrollTrigger:{trigger:el,start:'top 88%'}, y:48, opacity:0, duration:0.7, ease:'power3.out' });
-  });
-  gsap.from('.footer-inner > *', { scrollTrigger:{trigger:'footer',start:'top 90%'}, y:24, opacity:0, duration:0.6, stagger:0.12, ease:'power2.out' });
-}
-
-/* ── Magnetic ── */
-function setupMagnetic() {
-  [...document.querySelectorAll('.si'), document.querySelector('.dark-btn')].forEach(el => {
-    el.addEventListener('mousemove', e => {
-      const r=el.getBoundingClientRect();
-      gsap.to(el, { x:(e.clientX-(r.left+r.width/2))*0.38, y:(e.clientY-(r.top+r.height/2))*0.38, duration:0.3, ease:'power2.out' });
-    });
-    el.addEventListener('mouseleave', () => gsap.to(el, { x:0, y:0, duration:0.65, ease:'elastic.out(1,0.4)' }));
-  });
-}
-
-/* ── Dark mode ── */
-document.getElementById('darkBtn').addEventListener('click', function() {
-  const dark = document.documentElement.dataset.theme === 'dark';
-  document.documentElement.dataset.theme = dark ? 'light' : 'dark';
-  this.textContent = dark ? '☾' : '☀';
-});
-
-/* ── Cursor ── */
-const dot=document.getElementById('cur-dot'), ring=document.getElementById('cur-ring');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; });
-document.querySelectorAll('a,button,.skill-tag').forEach(el => {
-  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-});
-(function track() { rx+=(mx-rx)*0.13; ry+=(my-ry)*0.13; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(track); })();
-
-/* ── Progress bar ── */
-window.addEventListener('scroll', () => {
-  document.getElementById('prog').style.transform = `scaleX(${window.scrollY/(document.body.scrollHeight-window.innerHeight)})`;
-}, { passive:true });
+})();
 </script>
 </body>
 </html>

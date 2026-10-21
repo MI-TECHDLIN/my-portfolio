@@ -462,7 +462,7 @@
     /* ── Scroll reveal (only once the script is running) ── */
     .reveal-ready .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
     .reveal-ready .reveal.in { opacity: 1; transform: none; }
-    .reveal-ready .projects .project:nth-child(odd).reveal { transition-delay: 0.08s; }
+    .reveal-ready .projects .project:nth-child(even):not(.project--wide).reveal { transition-delay: 0.08s; }
 
     /* ── Responsive ── */
     @media (max-width: 980px) {

@@ -1128,7 +1128,6 @@
     <button class="viewer-btn viewer-close" type="button" aria-label="Close"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
   </div>
   <figure class="viewer-stage">
-    <img class="viewer-img" alt="">
     <figcaption class="viewer-caption"></figcaption>
     <button class="viewer-btn viewer-prev" type="button" aria-label="Previous screen"><svg aria-hidden="true"><use href="#i-prev"/></svg></button>
     <button class="viewer-btn viewer-next" type="button" aria-label="Next screen"><svg aria-hidden="true"><use href="#i-next"/></svg></button>
@@ -1264,8 +1263,10 @@
   /* ── Screenshot viewer ── */
   var viewer = document.getElementById('viewer');
   if (viewer && typeof viewer.showModal === 'function') {
-    var vImg = viewer.querySelector('.viewer-img');
+    var vImg = document.createElement('img');
     var vCap = viewer.querySelector('.viewer-caption');
+    vImg.className = 'viewer-img';
+    vImg.alt = '';
     var vTitle = viewer.querySelector('.viewer-title');
     var vCount = viewer.querySelector('.viewer-count');
     var vThumbs = viewer.querySelector('.viewer-thumbs');
@@ -1275,6 +1276,7 @@
       index = (i + items.length) % items.length;
       var item = items[index];
       vImg.src = item.src; vImg.width = item.w; vImg.height = item.h; vImg.alt = item.alt;
+      if (!vImg.parentNode) vCap.parentNode.insertBefore(vImg, vCap);
       vCap.textContent = item.alt;
       vCount.textContent = (index + 1) + ' / ' + items.length;
       Array.prototype.forEach.call(vThumbs.children, function (b, j) { b.setAttribute('aria-current', String(j === index)); });
@@ -1326,6 +1328,7 @@
       if (Math.abs(dx) > 45) show(index + (dx < 0 ? 1 : -1));
     });
     viewer.addEventListener('close', function () {
+      vImg.remove();
       vImg.removeAttribute('src');
       if (opener) opener.focus();
     });
